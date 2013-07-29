@@ -10,8 +10,8 @@
 
     function addCSSRule(selector, rules, index) {
         var sheet = document.styleSheets[0];
-        if(sheet.insertRule) {
-            sheet.insertRule(selector + "{" + rules + "}", index);
+        if (sheet.insertRule) {
+            sheet.insertRule(selector + '{' + rules + '}', index);
         } else {
             sheet.addRule(selector, rules, index);
         }
@@ -89,30 +89,32 @@
      * Add text-emphasis fallback.
      *
      * @param {HTMLElement} element .
-     * @param {string} styleAdColor .
-     * @param {string} position .
-     * @param {Object=} option 
+     * @param {Object} style .
+     * @param {Object=} option
      *                      {
      *                          language: 'zh',
      *                          writingMode: 'vertical' // horizontal
      *                      }.
      */
-    function emphasis(element, styleAndColor, position, option) {
+    function emphasis(element, style, option) {
         var styleNames;
         var $el = $(element);
-        /*
         if (styleNames = supportEmphasis()) {
-            if (position) {
-                $el.css(styleNames[1], position);
-            }
-            $el.css(styleNames[0], styleAndColor);
+            var cssInput = {};
+            cssInput[styleNames[0]] = '' +
+                    (style.filled ? 'filled' : 'open') +
+                    ' ' +
+                    style.mark +
+                    ' ' +
+                    style.color;
+            cssInput[styleNames[1]] = style.position;
+            $el.css(cssInput);
         } else {
-        */
-            fakeEmphasis(element, styleAndColor, position, option);
-        // }
+            fakeEmphasis(element, style, option);
+        }
     }
 
-    function fakeEmphasis(element, styleAndColor, position, option) {
+    function fakeEmphasis(element, style, option) {
         if (styleAndColor === 'none') {
             // TODO revert
         } else {
@@ -120,29 +122,6 @@
         }
     }
 
-    function calculateMarkInfo(element, styleAndColor, position, option) {
-        // TODO
-        var tmp = styleAndColor.split(' ');
-        var styleAndMark = tmp[0];
-        tmp = styleAndMark.split(' ');
-        var style;
-        var mark;
-        if (tmp[0] === 'filled' || tmp[0] === 'open') {
-            style = tmp[0];
-            mark = markMap[tmp[1]];
-        } else {
-            style = tmp[1];
-            mark = markMap[tmp[0]];
-        }
-        var color = tmp[1];
-
-        return {
-            position: position,
-            mark: mark,
-            color: color,
-            style: style
-        }
-    }
 
     function makeTemplate(el, markInfo) {
         var $el = $(el);
@@ -233,7 +212,16 @@
         }
         */
         this.each(function(index, element) {
-            emphasis(element, styleAndcolor, position, option);
+            emphasis(
+                element,
+                {
+                    filled: true,
+                    mark: 'dot',
+                    color: 'red',
+                    position: 'under'
+                },
+                option
+            );
         });
     };
 })(jQuery);
