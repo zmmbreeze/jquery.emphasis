@@ -5,11 +5,18 @@
         dot: ['\u2022', '\u25E6'],
         circle: ['\u25CF', '\u25CB'],
         'double-circle': ['\u25C9', '\u25CE'],
-        triangle: ['\u25B2', '\u25B3']
+        triangle: ['\u25B2', '\u25B3'],
+        sesame: ['\uFE45', '\uFE46']
     };
 
     function addCSSRule(selector, rules, index) {
         var sheet = document.styleSheets[0];
+        if (!sheet) {
+            // if has no style element
+            var style = document.createElement('style');
+            $('head').eq(0).append(style);
+            sheet = document.styleSheets[0];
+        }
         if (sheet.insertRule) {
             sheet.insertRule(selector + '{' + rules + '}', index);
         } else {
@@ -18,16 +25,49 @@
     }
 
     function initCSSRule() {
+        if (initCSSRule.inited) {
+            return;
+        }
+        initCSSRule.inited = true;
         addCSSRule('.js-jquery-emphasis-inline-block',
             'position:relative;' +
-            'display:inline-block; zoom:1;'
+            'display:inline-block;zoom:1;' +
+            // reset style
+            'float:none;' +
+            'border:none;' +
+            'margin:0;' +
+            'padding:0 0 0.5em 0;' +
+            'vertical-align: baseline;' +
+            '*vertical-align: -0.5em;' +
+            'color:inherit;' +
+            'font-size:inherit;' +
+            'text-decoration:inherit'
         );
         addCSSRule('.js-jquery-emphasis-inline',
             'position:relative;' +
-            ''
+            // reset style
+            'float:none;' +
+            'border:none;' +
+            'margin:0;' +
+            'padding:0;' +
+            'vertical-align: baseline;' +
+            'color:inherit;' +
+            'font-size:inherit;' +
+            'text-decoration:inherit'
         );
         addCSSRule('.js-jquery-emphasis-mark',
-            'position:absolute;'
+            'position:absolute;' +
+            'bottom: 0;' +
+            'left: 0;' +
+            'font-size: 0.5em;' +
+            'width: 2em;' +
+            'height: 1em;' +
+            'line-height: 1em;' +
+            'text-align: center;' +
+            '-webkit-text-size-adjust:none;'
+        );
+        addCSSRule('.js-jquery-emphasis-inline .js-jquery-emphasis-mark',
+            'bottom: -1em;'
         );
     }
 
@@ -39,7 +79,7 @@
      * @return {string|boolean} .
      */
     function testStyle(dom, styleName) {
-        if (dom.style[styleName[0].toLowerCase() + styleName.slice(1)] === '') {
+        if (dom.style[styleName.charAt(0).toLowerCase() + styleName.slice(1)] === '') {
             return '';
         }
         var prefixs = ['webkit', 'moz', 'o', 'ms'];
@@ -63,6 +103,8 @@
         var div = document.createElement('div');
         var prefix = testStyle(div, 'TextEmphasis');
         var result;
+        // TODO
+        prefix = false;
         if (prefix !== false) {
             // support
             if (!prefix) {
@@ -100,26 +142,37 @@
         var styleNames;
         var $el = $(element);
         if (styleNames = supportEmphasis()) {
-            var cssInput = {};
-            cssInput[styleNames[0]] = '' +
-                    (style.filled ? 'filled' : 'open') +
-                    ' ' +
-                    style.mark +
-                    ' ' +
-                    style.color;
-            cssInput[styleNames[1]] = style.position;
-            $el.css(cssInput);
+            if (style != null) {
+                var cssInput = {};
+                cssInput[styleNames[0]] = '' +
+                        (style.filled ? 'filled' : 'open') +
+                        ' ' +
+                        style.mark +
+                        ' ' +
+                        style.color;
+                cssInput[styleNames[1]] = style.position;
+                $el.css(cssInput);
+            } else {
+                $el.css(styleNames[0], 'none');
+            }
         } else {
-            fakeEmphasis(element, style, option);
+            if (style != null) {
+                fakeEmphasis(element, style, option);
+            } else {
+                removeFakeEmphasis($el);
+            }
         }
     }
 
+    function removeFakeEmphasis($el) {
+        $el.text($el.text());
+    }
+
     function fakeEmphasis(element, style, option) {
-        if (styleAndColor === 'none') {
-            // TODO revert
-        } else {
-            makeTemplate(element);
-        }
+        style.character = markMap[style.mark] ?
+            markMap[style.mark][style.filled ? 0 : 1] :
+            style.mark.charAt(0);
+        makeTemplate(element, style);
     }
 
 
@@ -129,6 +182,7 @@
         var fontSize = parseInt($el.css('font-size'), 10);
         var lineHeight = getLineHeight($el, fontSize);
         var markFontSize = fontSize / 2;
+
         // if not has enough space to place emphasis mark,
         // then use inline-block.
         var useInlineBlock = false;
@@ -136,25 +190,42 @@
             useInlineBlock = true;
         }
 
+        var notUseEm = false;
+        if (markFontSize < 12) {    // for chrome like browser has minimal font-size
+            notUseEm = true;
+        }
+
         var prefixTag;
         var suffixTag;
         if (useInlineBlock) {
-            prefixTag = '<span class="js-jquery-emphasis-inline-block">';
-            suffixTag = '<span class="js-jquery-emphasis-mark">' +
-                            markInfo.mark +
+            prefixTag = '<span class="js-jquery-emphasis-inline-block"">';
+            suffixTag = '<span class="js-jquery-emphasis-mark" style="' +
+                            (notUseEm ?
+                                'width:' + fontSize + 'px;' +
+                                'height:' + markFontSize + 'px;' +
+                                'line-height:' + markFontSize + 'px;':
+                                '') +
+                        '">' +
+                            markInfo.character +
                         '</span>' +
                         '</span>';
         } else {
             prefixTag = '<span class="js-jquery-emphasis-inline">';
-            suffixTag = '<span class="js-jquery-emphasis-mark">' +
-                            markInfo.mark +
+            suffixTag = '<span class="js-jquery-emphasis-mark" style="' + 
+                            (notUseEm ?
+                                'width:' + fontSize + 'px;' +
+                                'height:' + markFontSize + 'px;' +
+                                'line-height:' + markFontSize + 'px;':
+                                '') +
+                        '">' +
+                            markInfo.character +
                         '</span>' +
                         '</span>';
         }
 
-        $el.html('<span class="js-jquery-emphasis">' +
-                 $el.text().split('').join('</span><span>') +
-                '</span>');
+        $el.html(prefixTag +
+                    $el.text().split('').join(suffixTag + prefixTag) +
+                    suffixTag);
     }
 
     /**
