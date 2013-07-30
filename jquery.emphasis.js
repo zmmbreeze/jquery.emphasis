@@ -59,7 +59,10 @@
             'position:absolute;' +
             'bottom: 0;' +
             'left: 0;' +
-            'font-size: 0.5em;' +
+            // use zoom, because of some browser has minimal font-size
+            'zoom: 0.5;' +
+            'transform: scale(0.5);' +
+            'font-size: 1em;' +
             'width: 2em;' +
             'height: 1em;' +
             'line-height: 1em;' +
@@ -79,7 +82,8 @@
      * @return {string|boolean} .
      */
     function testStyle(dom, styleName) {
-        if (dom.style[styleName.charAt(0).toLowerCase() + styleName.slice(1)] === '') {
+        var tStyleName = styleName.charAt(0).toLowerCase() + styleName.slice(1);
+        if (typeof dom.style[tStyleName] !== 'undefined') {
             return '';
         }
         var prefixs = ['webkit', 'moz', 'o', 'ms'];
@@ -124,6 +128,45 @@
         }
 
         supportEmphasis.result = result;
+        return result;
+    }
+
+    /**
+     * test transform support
+     * @return {boolean|string} .
+     */
+    function supportTransform() {
+        if (supportTransform.result != null) {
+            return supportTransform.result;
+        }
+
+        var div = document.createElement('div');
+        var prefix = testStyle(div, 'Transform');
+        var result;
+        if (prefix !== false) {
+            result = prefix ? (prefix + 'Transform') : 'transform';
+        } else {
+            result = false;
+        }
+        supportTransform.result = result;
+        return result;
+    }
+
+    /**
+     * test zoom support
+     * @return {boolean|string} .
+     */
+    function supportZoom() {
+        if (supportZoom.result != null) {
+            return supportZoom.result;
+        }
+
+        var div = document.createElement('div');
+        var result = false;
+        if (typeof div.style.zoom !== 'undefined') {
+            result = true;
+        }
+        supportZoom.result = result;
         return result;
     }
 
@@ -191,7 +234,8 @@
         }
 
         var notUseEm = false;
-        if (markFontSize < 12) {    // for chrome like browser has minimal font-size
+        // for chrome like browser has minimal font-size
+        if (markFontSize < 12) {
             notUseEm = true;
         }
 
@@ -203,7 +247,7 @@
                             (notUseEm ?
                                 'width:' + fontSize + 'px;' +
                                 'height:' + markFontSize + 'px;' +
-                                'line-height:' + markFontSize + 'px;':
+                                'line-height:' + markFontSize + 'px;' :
                                 '') +
                         '">' +
                             markInfo.character +
@@ -211,11 +255,11 @@
                         '</span>';
         } else {
             prefixTag = '<span class="js-jquery-emphasis-inline">';
-            suffixTag = '<span class="js-jquery-emphasis-mark" style="' + 
+            suffixTag = '<span class="js-jquery-emphasis-mark" style="' +
                             (notUseEm ?
                                 'width:' + fontSize + 'px;' +
                                 'height:' + markFontSize + 'px;' +
-                                'line-height:' + markFontSize + 'px;':
+                                'line-height:' + markFontSize + 'px;' :
                                 '') +
                         '">' +
                             markInfo.character +
