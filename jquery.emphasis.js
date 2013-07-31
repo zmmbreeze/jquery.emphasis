@@ -283,11 +283,20 @@
         }
 
         // update html
-        $node.replaceWith(
-            prefixTag +
-                $node.text().split('').join(suffixTag + prefixTag) +
-            suffixTag
-        );
+        var text = $node.text();
+        var c;
+        var html = [];
+        for (var i = 0, l = text.length; i < l; i++) {
+            c = text.charAt(i);
+            if (ignoreCharacter[c]) {
+                html.push(c);
+            } else {
+                html.push(prefixTag);
+                html.push(c);
+                html.push(suffixTag);
+            }
+        }
+        $node.replaceWith(html.join(''));
     }
 
     /**
