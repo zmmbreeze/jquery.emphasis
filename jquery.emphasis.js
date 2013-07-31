@@ -11,6 +11,7 @@
     var classInlineHash = 'js-jquery-emphasis-inline' + hash;
     var classMarkHash = 'js-jquery-emphasis-mark' + hash;
 
+    var uniqueId = 0;
     var markMap = {
         dot: ['\u2022', '\u25E6'],
         circle: ['\u25CF', '\u25CB'],
@@ -22,7 +23,7 @@
     var ignoreCharacter = {
         // word-sperator
         // http://www.w3.org/TR/css3-text/#word-separator
-        '\u0020': 1,
+        ' ': 1,
         '\u00A0': 1,
         '\u1361': 1,
         '\u10100': 1,
@@ -85,7 +86,7 @@
             'text-decoration:inherit;' +
             'line-height:inherit;'
         );
-        addCSSRule('.' + classMarkHash,
+        var styleForBeforeClass =
             'position:absolute;' +
             'bottom: 0;' +
             'left: 0;' +
@@ -100,8 +101,12 @@
             'vertical-align: baseline;' +
             'color:inherit;' +
             'font-size: inherit;' +
-            'text-decoration:inherit;'
-        );
+            'text-decoration:inherit;';
+        console.log('.' + classInlineHash + ':before');
+        console.log('.' + classInlineBlockHash + ':before');
+        console.log(styleForBeforeClass);
+        addCSSRule('.' + classInlineHash + ':before', styleForBeforeClass);
+        addCSSRule('.' + classInlineBlockHash + ':before', styleForBeforeClass);
         addCSSRule('.' + classInlineHash + ' .' + classMarkHash,
             'bottom: -1em;'
         );
@@ -219,8 +224,10 @@
         for (var i = 0, l = children.length; i < l; i++) {
             node = children[i];
             var className = node.className;
-            if (className !== classInlineBlockHash &&
-                className !== classInlineHash) {
+            console.log(className);
+            continue;
+            if (className.indexOf(classInlineBlockHash) !== 0 &&
+                className.indexOf(classInlineHash) !== 0) {
                 fakeEmphasis($(node), markInfo);
             }
         }
@@ -262,32 +269,44 @@
         }
 
         // generate html
-        var prefixTag;
-        var suffixTag;
-        if (useInlineBlock) {
-            prefixTag = '<span class="' + classInlineBlockHash + '">';
-            suffixTag = '<span class="' + classMarkHash + '" style="' +
-                             markStyle +
-                        '">' +
-                            markInfo.character +
-                        '</span>' +
-                        '</span>';
-        } else {
-            prefixTag = '<span class="' + classInlineHash + '">';
-            suffixTag = '<span class="' + classMarkHash + '" style="' +
-                            markStyle +
-                        '">' +
-                            markInfo.character +
-                        '</span>' +
-                        '</span>';
-        }
+        var normalClass =
+            (useInlineBlock ? classInlineBlockHash : classInlineHash);
+        var uniqueClass =
+            classMarkHash + '-' + (uniqueId++);
+        var prefixTag = '<span class="' +
+                            normalClass + ' ' +
+                            uniqueClass + '">';
+        var suffixTag = '</span>';
 
         // update html
+        /*
         $node.replaceWith(
             prefixTag +
                 $node.text().split('').join(suffixTag + prefixTag) +
             suffixTag
         );
+        */
+        var text = $node.text();
+        var c;
+        var html = [
+            '<style>',
+                '.' + uniqueClass + ':before {',
+                    'content:\'' + markInfo.character + '\';',
+                '}',
+            '</style>'
+        ];
+        for (var i = 0, l = text.length; i < l; i++) {
+            c = text.charAt(i);
+            if (ignoreCharacter[c]) {
+                html.push(c);
+            } else {
+                html.push(prefixTag);
+                html.push(c);
+                html.push(suffixTag);
+            }
+        }
+        console.log(html.join(''));
+        $node.replaceWith(html.join(''));
     }
 
     /**
@@ -369,7 +388,10 @@
 
             var styleNames;
             if (styleNames = supportEmphasis()) {
+                // support css3 text-emphasis
+
                 if (markInfo != null) {
+                    // $('em').emphasis('dot');
                     var cssInput = {};
                     cssInput[styleNames[0]] = '' +
                             (markInfo.filled ? 'filled' : 'open') +
@@ -380,10 +402,15 @@
                     cssInput[styleNames[1]] = markInfo.position;
                     $el.css(cssInput);
                 } else {
+                    // $('em').emphasis('none');
                     $el.css(styleNames[0], 'none');
                 }
             } else {
+                // fallback
+
                 if (markInfo != null) {
+                    // $('em').emphasis('dot');
+
                     // remember
                     $el.data(argumentsHash, args);
                     if (typeof $el.data(htmlHash) === 'undefined') {
@@ -399,6 +426,8 @@
                         markInfo.mark.charAt(0);
                     fakeEmphasis($el, markInfo);
                 } else {
+                    // $('em').emphasis('none');
+
                     // forget
                     $el.removeData(argumentsHash);
                     $el.removeData(htmlHash);
