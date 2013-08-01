@@ -5,21 +5,12 @@
     <title>jQuery text-emphasis</title>
     <style>
     body {
-        margin: 1.5em;
-        line-height: 1.5em;
-        font-size: 16px;
-        color: #666;
-        background-color: #BBB;
         font-family:"ff-tisa-web-pro-1","ff-tisa-web-pro-2",
                     "Lucida Grande",
                     "Hiragino Sans GB","Hiragino Sans GB W3",
                     "Microsoft YaHei",
                     "wenquanyi micro hei",
                     sans-serif;
-    }
-    .container {
-        overflow: hidden;
-        background-color: #FFF;
     }
     .example{
         position: relative;
@@ -49,17 +40,20 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>jQuery.emphasis.js</h1>
-        <p>A javascript fallback for CSS3 <a class="emphasis" href="http://www.w3.org/TR/css-text-decor-3/#emphasis-marks" target="_blank"><code>text-emphasis</code></a>.</p>
-        <div>
-            <p>那年冬天，祖母死了，父亲的差使也交卸了，正是祸不单行的日子。我从北京到徐州，打算<strong>跟着 父亲</strong>奔丧回家。到徐州见着父亲，看见满院<em>狼 藉</em>的东西，又想起祖母，不禁簌簌地流下眼泪。父亲说：“<em class="emphasis">事<span style="color:red;">已如</span>此</em>，不必难过，好在天无绝人之路！”</p>
-        </div>
+    <h1>jQuery.emphasis.js</h1>
+    <p>A javascript fallback for CSS3 <a href="http://www.w3.org/TR/css-text-decor-3/#emphasis-marks" target="_blank"><code>text-emphasis</code></a>.</p>
+    <div>
+        <p>那年冬天，祖母死了，父亲的差使也交卸了，正是祸不单行的日子。我从北京到徐州，打算<strong>跟着 父亲</strong>奔丧回家。到徐州见着父亲，看见满院<em>狼 藉</em>的东西，又想起祖母，不禁簌簌地流下眼泪。父亲说：“<em>事<span style="color:red;">已如</span>此</em>，不必难过，好在天无绝人之路！”</p>
     </div>
     <script src="jquery-1.10.2.min.js"></script>
     <script src="jquery.emphasis.js"></script>
     <script>
-    $('.emphasis').emphasis('filled');
+    // $('em').emphasis('dot', 'under');
+    // $('em').emphasis('dot');
+    // $('em').emphasis('open', 'over');
+    $('em').emphasis('\'AA\'', 'over');
+    // $('em').emphasis('blue', 'over');   // error
+    $('div').emphasis('open', 'over');
     </script>
 </body>
 </html>
