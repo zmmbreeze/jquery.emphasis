@@ -4,8 +4,6 @@
     // prevent duplicate
     // hash code from 'jquery.emphasis'
     var hash = '9a91ab9b8e64d2cf7fce0616b66efbaf';
-    var argumentsHash = 'emphasisOldArguments' + hash;
-    var textHash = 'emphasisOldText' + hash;
     var htmlHash = 'emphasisOldHtml' + hash;
     var classInlineBlockHash = 'js-jquery-emphasis-inline-block' + hash;
     var classInlineHash = 'js-jquery-emphasis-inline' + hash;
@@ -37,22 +35,39 @@
         '\u2000': 1,
         '\u200A': 1
     };
+    var skipHtmlTagName = {
+        'style': 1,
+        'script': 1,
+        'textarea': 1,
+        'input': 1
+    };
 
-    function addCSSRule(selector, rules, index) {
-        var sheet = document.styleSheets[0];
-        if (!sheet) {
-            // if has no style element
+    /**
+     * add CSS rule at last.
+     *
+     * @param {string} selector '.foo'.
+     * @param {string} rules 'color:red;background:blue;'.
+     */
+    var styleSheet;
+    function addCSSRule(selector, rules) {
+        if (!styleSheet) {
             var style = document.createElement('style');
-            $('head').eq(0).append(style);
-            sheet = document.styleSheets[0];
+            style.type = 'text/css';
+            $('head').eq(0).prepend(style);
+            styleSheet = document.styleSheets[0];
         }
-        if (sheet.insertRule) {
-            sheet.insertRule(selector + '{' + rules + '}', index);
+
+        if (styleSheet.insertRule) {
+            styleSheet.insertRule(selector + '{' + rules + '}', styleSheet.cssRules.length);
         } else {
-            sheet.addRule(selector, rules, index);
+            // IE
+            styleSheet.addRule(selector, rules, -1);
         }
     }
 
+    /**
+     * init css style.
+     */
     function initCSSRule() {
         if (initCSSRule.inited) {
             return;
@@ -102,14 +117,23 @@
             'color:inherit;' +
             'font-size: inherit;' +
             'text-decoration:inherit;';
-        console.log('.' + classInlineHash + ':before');
-        console.log('.' + classInlineBlockHash + ':before');
-        console.log(styleForBeforeClass);
         addCSSRule('.' + classInlineHash + ':before', styleForBeforeClass);
         addCSSRule('.' + classInlineBlockHash + ':before', styleForBeforeClass);
         addCSSRule('.' + classInlineHash + ' .' + classMarkHash,
             'bottom: -1em;'
         );
+    }
+
+    var markHasCssRule = {};
+    function addBeforeCSSRule(mark, style) {
+        if (markHasCssRule[mark]) {
+            return markHasCssRule[mark];
+        }
+
+        var className = classMarkHash + (uniqueId++);
+        addCSSRule('.' + className + ':before', style);
+        markHasCssRule[mark] = className;
+        return className;
     }
 
     /**
@@ -210,25 +234,29 @@
      * @param {Object} markInfo .
      */
     function fakeEmphasis($el, markInfo) {
+        var children = $el.children();
+        var node;
+        for (var i = 0, l = children.length; i < l; i++) {
+            node = children[i];
+            var className = node.className;
+            // is generated span
+            // TODO if it's needed.
+            var isGeneratedSpan = false;
+                            //className.indexOf(classInlineBlockHash) !== -1 ||
+                            //className.indexOf(classInlineHash) !== -1;
+            // is ignore html tag like style/script/textarea/input
+            var nodeName = node.nodeName.toLowerCase();
+            if (!(skipHtmlTagName[nodeName] || isGeneratedSpan)) {
+                fakeEmphasis($(node), markInfo);
+            }
+        }
+
         var contents = $el.contents();
         var content;
         for (var j = 0, ll = contents.length; j < ll; j++) {
             content = contents[j];
             if (content.nodeType === 3) {
                 textToHtml($(content), $el, markInfo);
-            }
-        }
-
-        var children = $el.children();
-        var node;
-        for (var i = 0, l = children.length; i < l; i++) {
-            node = children[i];
-            var className = node.className;
-            console.log(className);
-            continue;
-            if (className.indexOf(classInlineBlockHash) !== 0 &&
-                className.indexOf(classInlineHash) !== 0) {
-                fakeEmphasis($(node), markInfo);
             }
         }
     }
@@ -271,8 +299,11 @@
         // generate html
         var normalClass =
             (useInlineBlock ? classInlineBlockHash : classInlineHash);
-        var uniqueClass =
-            classMarkHash + '-' + (uniqueId++);
+        var uniqueClass = addBeforeCSSRule(
+            markInfo.character,
+            'content:\'' + markInfo.character + '\';' +
+            markStyle
+        );
         var prefixTag = '<span class="' +
                             normalClass + ' ' +
                             uniqueClass + '">';
@@ -289,11 +320,13 @@
         var text = $node.text();
         var c;
         var html = [
+            /*
             '<style>',
                 '.' + uniqueClass + ':before {',
                     'content:\'' + markInfo.character + '\';',
                 '}',
             '</style>'
+            */
         ];
         for (var i = 0, l = text.length; i < l; i++) {
             c = text.charAt(i);
@@ -305,7 +338,6 @@
                 html.push(suffixTag);
             }
         }
-        console.log(html.join(''));
         $node.replaceWith(html.join(''));
     }
 
@@ -360,7 +392,6 @@
      *                      }.
      */
     $.fn.emphasis = function(styleAndcolor, position, option) {
-        var args = arguments;
         initCSSRule();
         var markInfo = {
             filled: true,
@@ -391,7 +422,8 @@
                 // support css3 text-emphasis
 
                 if (markInfo != null) {
-                    // $('em').emphasis('dot');
+                    // >> $('em').emphasis('dot');
+
                     var cssInput = {};
                     cssInput[styleNames[0]] = '' +
                             (markInfo.filled ? 'filled' : 'open') +
@@ -402,96 +434,40 @@
                     cssInput[styleNames[1]] = markInfo.position;
                     $el.css(cssInput);
                 } else {
-                    // $('em').emphasis('none');
+                    // >> $('em').emphasis('none');
+
                     $el.css(styleNames[0], 'none');
                 }
             } else {
                 // fallback
 
                 if (markInfo != null) {
-                    // $('em').emphasis('dot');
+                    // >> $('em').emphasis('dot');
 
                     // remember
-                    $el.data(argumentsHash, args);
                     if (typeof $el.data(htmlHash) === 'undefined') {
                         // first time
                         // TODO not safe on IE, because of '`' character
                         $el.data(htmlHash, $el.html());
-                        $el.data(textHash, $el.text());
                     }
 
                     // calculate character
                     markInfo.character = markMap[markInfo.mark] ?
                         markMap[markInfo.mark][markInfo.filled ? 0 : 1] :
                         markInfo.mark.charAt(0);
+
                     fakeEmphasis($el, markInfo);
                 } else {
-                    // $('em').emphasis('none');
+                    // >> $('em').emphasis('none');
+
+                    $el.html($el.data(htmlHash));
 
                     // forget
-                    $el.removeData(argumentsHash);
                     $el.removeData(htmlHash);
-                    $el.removeData(textHash);
 
-                    $el.html($el.emphasisHtml());
                 }
             }
         });
-    };
-
-    $.fn.emphasisHtml = function(newString) {
-        var oldHtml = this.data(htmlHash);
-        if (newString == null) {
-            // $('foo').text();
-            if (oldHtml) {
-                // emphasised
-                return oldHtml;
-            } else {
-                // pure text
-                return $.fn.html.apply(this, arguments);
-            }
-        } else {
-            // $('foo').text('string');
-            var result = $.fn.html.apply(this, arguments);
-            if (oldHtml) {
-                // if it was emphasised, them emphasis again.
-                this.emphasis.apply(this, this.data(argumentsHash));
-            }
-            return result;
-        }
-    };
-
-    $.fn.emphasisText = function(newString) {
-        var me = this;
-        var result = '';
-
-        this.each(function(index, element) {
-            var $el = $(element);
-            var oldText = $el.data(textHash);
-            if (newString == null) {
-                // $('foo').text();
-                if (oldText) {
-                    // emphasised
-                    result += oldText;
-                } else {
-                    // pure text
-                    result += $.fn.text.call($el, newString);
-                }
-            } else {
-                // $('foo').text('string');
-                $.fn.text.call($el, newString);
-                if (oldText) {
-                    // if it was emphasised, them emphasis again.
-                    $el.emphasis.apply($el, $el.data(argumentsHash));
-                }
-            }
-        });
-
-        if (newString == null) {
-            return result;
-        } else {
-            return this;
-        }
     };
 
 })(jQuery);
