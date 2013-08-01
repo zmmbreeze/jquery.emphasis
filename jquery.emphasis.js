@@ -144,14 +144,17 @@
             'vertical-align: baseline;' +
             'color:inherit;' +
             'font-size: inherit;' +
-            'text-decoration:inherit;';
+            'text-decoration: none;';
         // .emphasis-inline:before
         addCSSRule('.' + classInlineHash + ':before',
             styleForBeforeClass +
             'bottom: -1em;'
         );
         // .emphasis-inline-block:before
-        addCSSRule('.' + classInlineBlockHash + ':before', styleForBeforeClass);
+        addCSSRule(
+            '.' + classInlineBlockHash + ':before',
+            styleForBeforeClass
+        );
 
         // .emphasis-inline.emphasis-scale-mark:before
         addCSSRule(

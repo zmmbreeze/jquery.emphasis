@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>jQuery text-emphasis</title>
+    <link href='http://fonts.googleapis.com/css?family=Autour+One' rel='stylesheet' type='text/css'>
     <style>
     body {
-        margin: 1.5em;
-        line-height: 1.5em;
+        margin: 2em;
+        line-height: 1.5;
         font-size: 16px;
         color: #666;
         background-color: #BBB;
@@ -17,14 +18,52 @@
                     "wenquanyi micro hei",
                     sans-serif;
     }
+    a {
+        color: #069;
+        text-decoration: none;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+    p, div, pre {
+        margin: 1em 0;
+        padding: 0;
+    }
+    h1, h2, h3, h4, h5, h6 {
+        margin: 0 0 1em 0;
+        line-height: 2em;
+        font-size: 1em;
+        font-family: 'Autour One', cursive;
+    }
+    h1 {
+        font-size: 2em;
+    }
+    h2 {
+        font-size: 1.5em;
+    }
+
+    .autour-one {
+        font-family: 'Autour One', cursive;
+    }
     .container {
         overflow: hidden;
         background-color: #FFF;
+        border: 1px solid #999;
+    }
+    .main {
+        overflow: hidden;
+        margin: 0 auto;
+        padding: 2em;
+        max-width: 640px;
+    }
+    .slogan {
+        padding-bottom: 1em;
+        border-bottom: 1px dashed #999;
     }
     .example{
         position: relative;
-        margin: 15px 0 15px 20px;
-        padding: 39px 19px 14px;
+        margin: 1em 0;
+        padding: 2em 1em 1em;
         background-color: white;
         border: 1px solid #DDD;
         -webkit-border-radius: 4px;
@@ -50,10 +89,20 @@
 </head>
 <body>
     <div class="container">
-        <h1>jQuery.emphasis.js</h1>
-        <p>A javascript fallback for CSS3 <a class="emphasis" href="http://www.w3.org/TR/css-text-decor-3/#emphasis-marks" target="_blank"><code>text-emphasis</code></a>.</p>
-        <div>
-            <p>那年冬天，祖母死了，父亲的差使也交卸了，正是祸不单行的日子。我从北京到徐州，打算<strong>跟着 父亲</strong>奔丧回家。到徐州见着父亲，看见满院<em>狼 藉</em>的东西，又想起祖母，不禁簌簌地流下眼泪。父亲说：“<em class="emphasis">事<span style="color:red;">已如</span>此</em>，不必难过，好在天无绝人之路！”</p>
+        <div class="main">
+            <h1>jQuery.<span class="emphasis">emphasis</span>.js</h1>
+            <p class="autour-one slogan">A javascript fallback for CSS3 "<a class="emphasis" href="http://www.w3.org/TR/css-text-decor-3/#emphasis-marks" target="_blank">text-emphasis</a>". It's require jQuery. It's support IE8+, Chrome 12+, Opera 10+, Firefox 4+ and Safari 5+.</p>
+
+            <h2>Usage</h2>
+            <p class="autour-one">Include jQuery and emphasis plugin into html.</p>
+            <pre><code>&lt;script src="jquery-1.10.2.min.js"&gt;&lt;/script&gt;
+&lt;script src="jquery.emphasis.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+$('em').emphasis('dot');
+&lt;/script&gt;</code></pre>
+
+            <h2>Example</h2>
+            <p class="example">那年冬天，祖母死了，父亲的差使也交卸了，正是祸不单行的日子。我从北京到徐州，打算<strong>跟着 父亲</strong>奔丧回家。到徐州见着父亲，看见满院<em>狼 藉</em>的东西，又想起祖母，不禁簌簌地流下眼泪。父亲说：“<em>事<span style="color:red;">已如</span>此</em>，不必难过，好在天无绝人之路！”</p>
         </div>
     </div>
     <script src="jquery-1.10.2.min.js"></script>
