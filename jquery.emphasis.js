@@ -1,4 +1,4 @@
-/*global jQuery:false, document:false */
+/*global jQuery:false, document:false, navigator:false */
 
 (function($) {
     // prevent duplicate
@@ -8,6 +8,7 @@
     var classInlineBlockHash = 'js-jquery-emphasis-inline-block' + hash;
     var classInlineHash = 'js-jquery-emphasis-inline' + hash;
     var classMarkHash = 'js-jquery-emphasis-mark' + hash;
+    var classScaleHash = 'js-jquery-emphasis-scale-mark' + hash;
 
     var uniqueId = 0;
     var markMap = {
@@ -18,6 +19,8 @@
         sesame: ['\uFE45', '\uFE46']
     };
     // TODO
+    // not exactly like spec
+    // only list commonly used characters
     var ignoreCharacter = {
         // word-sperator
         // http://www.w3.org/TR/css3-text/#word-separator
@@ -33,7 +36,14 @@
         '\u200B': 1,
         '\u3000': 1,
         '\u2000': 1,
-        '\u200A': 1
+        '\u200A': 1,
+        // unicode control characters, only show commmonly used one.
+        // http://en.wikipedia.org/wiki/Unicode_control_characters
+        '\u0000': 1,
+        '\u0009': 1,
+        '\u000A': 1,
+        '\u000D': 1,
+        '\u0085': 1
     };
     var skipHtmlTagName = {
         'style': 1,
@@ -119,8 +129,10 @@
             'text-decoration:inherit;';
         addCSSRule('.' + classInlineHash + ':before', styleForBeforeClass);
         addCSSRule('.' + classInlineBlockHash + ':before', styleForBeforeClass);
-        addCSSRule('.' + classInlineHash + ' .' + classMarkHash,
-            'bottom: -1em;'
+        addCSSRule('.' + classInlineHash + ':before', 'bottom: -1em;');
+        addCSSRule(
+            '.' + classInlineHash + '.' + classScaleHash + ':before',
+           'bottom: -0.5em;'
         );
     }
 
@@ -141,7 +153,7 @@
      *
      * @param {HTMLElement} dom .
      * @param {string} styleName .
-     * @return {string|boolean} supported style name or `false`.
+     * @return {string} supported style name or empty string.
      */
     function testStyle(dom, styleName) {
         // true style name
@@ -179,7 +191,7 @@
      * @return {boolean|array} .
      */
     function supportScale() {
-        if (supportScale.result != null) {
+        if (typeof supportScale.result !== 'undefined') {
             return supportScale.result;
         }
 
@@ -192,7 +204,7 @@
             transformOriginName = jsNameToCssName(transformOriginName);
             result = [transformName, transformOriginName];
         } else {
-            result = false;
+            result = null;
         }
 
         supportScale.result = result;
@@ -202,12 +214,12 @@
     /**
      * test emphasis support.
      *
-     * @return {boolean|array} .
+     * @return {array} .
      */
     function supportEmphasis() {
+        return;
         // TODO
-        return false;
-        if (supportEmphasis.result != null) {
+        if (typeof supportEmphasis.result !== 'undefined') {
             return supportEmphasis.result;
         }
 
@@ -217,10 +229,10 @@
         var result;
         if (textEmphasisName && textEmphasisPositionName) {
             // support
-            return [textEmphasisName, textEmphasisPositionName];
+            result = [textEmphasisName, textEmphasisPositionName];
         } else {
             // not support
-            result = false;
+            result = null;
         }
 
         supportEmphasis.result = result;
@@ -241,9 +253,8 @@
             var className = node.className;
             // is generated span
             // TODO if it's needed.
-            var isGeneratedSpan = false;
-                            //className.indexOf(classInlineBlockHash) !== -1 ||
-                            //className.indexOf(classInlineHash) !== -1;
+            var isGeneratedSpan = className.indexOf(classInlineBlockHash) !== -1 ||
+                                className.indexOf(classInlineHash) !== -1;
             // is ignore html tag like style/script/textarea/input
             var nodeName = node.nodeName.toLowerCase();
             if (!(skipHtmlTagName[nodeName] || isGeneratedSpan)) {
@@ -295,6 +306,10 @@
                         'height:' + markFontSize + 'px;' +
                         'line-height:' + markFontSize + 'px;';
         }
+        // use `!important` for color
+        if (markInfo.color) {
+            markStyle += 'color:' + markInfo.color + ' !important;';
+        }
 
         // generate html
         var normalClass =
@@ -306,28 +321,15 @@
         );
         var prefixTag = '<span class="' +
                             normalClass + ' ' +
-                            uniqueClass + '">';
+                            uniqueClass + ' ' +
+                            (useScale ? classScaleHash : '') +
+                            '">';
         var suffixTag = '</span>';
 
         // update html
-        /*
-        $node.replaceWith(
-            prefixTag +
-                $node.text().split('').join(suffixTag + prefixTag) +
-            suffixTag
-        );
-        */
         var text = $node.text();
         var c;
-        var html = [
-            /*
-            '<style>',
-                '.' + uniqueClass + ':before {',
-                    'content:\'' + markInfo.character + '\';',
-                '}',
-            '</style>'
-            */
-        ];
+        var html = [];
         for (var i = 0, l = text.length; i < l; i++) {
             c = text.charAt(i);
             if (ignoreCharacter[c]) {
@@ -349,7 +351,7 @@
     function getLineHeight($el, fontSize) {
         var lineHeight = $el.css('line-height');
         if (lineHeight === 'normal') {
-            lineHeight = getNormalLineHeight(fontSize);
+            return getNormalLineHeight(fontSize);
         } else if (lineHeight.match(/px/)) {
             return parseInt(lineHeight, 10);
         } else {
@@ -361,7 +363,7 @@
      * get line-height in 'px' when it equal to 'normal'.
      */
     function getNormalLineHeight(fontSize) {
-        if (getNormalLineHeight.result) {
+        if (typeof getNormalLineHeight.result !== 'undefined') {
             return getNormalLineHeight.result;
         }
         var tmp = $('<div style="' +
@@ -374,10 +376,170 @@
                         'width:100px;' +
                     '">Some words.</div>');
         tmp.css('font-size', fontSize + 'px');
+        tmp.appendTo('body');
         var lineHeight = tmp.height();
+        tmp.remove();
         getNormalLineHeight.result = lineHeight;
         return lineHeight;
     }
+
+
+    var rString = /['"]([^'"]+)['"]/;
+    var rMark = /(dot|circle|double-circle|triangle|sesame)/;
+    var rPosition = /(under|over|left|right)/;
+    /**
+     * MarkInfo
+     *
+     * @constructor
+     * @param {string} styleAndColor .
+     * @param {string} position .
+     */
+    var MarkInfo = function(styleAndColor, position) {
+        this.parse(styleAndColor, position);
+    };
+
+    /**
+     * set value on this object.
+     * if set again then return false.
+     *
+     * @param {string} key .
+     * @param {string} value .
+     * @return {boolean} success.
+     */
+    MarkInfo.prototype.set = function(key, value) {
+        if (typeof this[key] !== 'undefined') {
+            return false;
+        }
+        this[key] = value;
+        return true;
+    };
+
+    /**
+     * parse input to get markInfo
+     *
+     * @param {string} styleAndColor
+     * @param {string} position
+     * @return {boolean|null|object}
+     *          boolean => input value error
+     *          null => 
+     */
+    MarkInfo.prototype.parse = function(styleAndColor, position) {
+        var r;  // match result
+
+        // set position
+        if (position) {
+            if (r = position.match(rPosition)) {
+                // >> 'over'
+                this.position = r[1];
+            } else {
+                // >> position value error
+                this.error = true;
+                return;
+            }
+        }
+
+        // set style and color
+        if (!styleAndColor) {
+            this.error = true;
+            return;
+        }
+        styleAndColor = styleAndColor.split(' ');
+
+        var value;
+        var setResult;
+        for (var i = 0, l = styleAndColor.length; i < l; i++) {
+            value = styleAndColor[i];
+
+            if (r = value.match(rString)) {
+                // >> '"@"'
+                var stringMark = r[1];
+                if (stringMark.length > 1) {
+                    stringMark = stringMark.charAt(0);
+                }
+                setResult = this.set('mark', stringMark);
+                this.isStringMark = true;
+                if (setResult) {
+                    return;
+                }
+            } else if (value.indexOf('none') !== -1) {
+                // >> 'none'
+                this.isNone = true;
+                return;
+            } else if (value.indexOf('filled') !== -1) {
+                // >> 'filled'
+                setResult = this.set('filled', true);
+            } else if (value.indexOf('open') !== -1) {
+                // >> 'open'
+                setResult = this.set('filled', false);
+            } else if (r = value.match(rMark)) {
+                // >> 'dot'
+                setResult = this.set('mark', r[1]);
+            } else {
+                // >> color like 'red'
+                setResult = this.set('color', $.trim(value));
+            }
+
+            if (!setResult) {
+                // >> styleAndColor value error
+                this.error = true;
+                return;
+            }
+        }
+
+        if (typeof this.mark === 'undefined' && typeof this.filled === 'undefined') {
+            // >> mark and filled not set
+            this.error = true;
+        }
+    };
+
+    /**
+     * auto complete values to
+     *  {
+     *      filled: true,
+     *      mark: 'dot',
+     *      color: 'red',
+     *      position: 'under'
+     *  }
+     *
+     */
+    MarkInfo.prototype.autoComplete = function() {
+        var language = navigator.language || navigator.browserLanguage;
+        language = language.slice(0, 2);
+
+        var isJapanese = language === 'ja';
+        var writingMode = 'horizontal';
+
+        // complete position
+        if (this.position == null) {
+            // not set position
+            if (writingMode === 'vertical') {
+                this.position = 'right';
+            } else {
+                if (isJapanese) {
+                    this.position = 'over';
+                } else {
+                    // other language like chinese
+                    this.position = 'under';
+                }
+            }
+        }
+
+        // complete style
+        var hasFilled = typeof this.filled !== 'undefined';
+        var hasMark = typeof this.mark !== 'undefined';
+
+        if ((hasFilled && hasMark) || (hasMark && this.isStringMark)) {
+            // no need to complete
+            return;
+        }
+
+        if (hasMark) {
+            // no filled
+            this.filled = true;
+        } else if (hasFilled) {
+            this.mark = writingMode === 'vertical' ? 'sesame' : 'circle';
+        }
+    };
 
     /**
      * Add text-emphasis fallback.
@@ -385,40 +547,22 @@
      *
      * @param {Object} $el .
      * @param {Object} style .
-     * @param {Object=} option
-     *                      {
-     *                          language: 'zh',
-     *                          writingMode: 'vertical' // horizontal
-     *                      }.
      */
-    $.fn.emphasis = function(styleAndcolor, position, option) {
+    $.fn.emphasis = function(styleAndColor, position) {
+
         initCSSRule();
-        var markInfo = {
-            filled: true,
-            mark: 'dot',
-            color: 'red',
-            position: 'under'
-        };
-        // TODO
-        /*
-        if (position == null) {
-            // not set position
-            if (option.writingMode === 'vertical') {
-                position = 'right';
-            } else {
-                if (option.language === 'zh') {
-                    position = 'under';
-                } else {
-                    position = 'over';
-                }
-            }
+
+        var markInfo = new MarkInfo(styleAndColor, position);
+        if (markInfo.error) {
+            return;
         }
-        */
+        markInfo.autoComplete();
+
         this.each(function(index, element) {
             var $el = $(element);
 
-            var styleNames;
-            if (styleNames = supportEmphasis()) {
+            var styleNames = supportEmphasis();
+            if (styleNames) {
                 // support css3 text-emphasis
 
                 if (markInfo != null) {
@@ -430,7 +574,7 @@
                             ' ' +
                             markInfo.mark +
                             ' ' +
-                            markInfo.color;
+                            (markInfo.color || '');
                     cssInput[styleNames[1]] = markInfo.position;
                     $el.css(cssInput);
                 } else {
