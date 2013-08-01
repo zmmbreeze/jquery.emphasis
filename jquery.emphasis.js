@@ -5,10 +5,16 @@
     // hash code from 'jquery.emphasis'
     var hash = '9a91ab9b8e64d2cf7fce0616b66efbaf';
     var htmlHash = 'emphasisOldHtml' + hash;
-    var classInlineBlockHash = 'js-jquery-emphasis-inline-block' + hash;
-    var classInlineHash = 'js-jquery-emphasis-inline' + hash;
-    var classMarkHash = 'js-jquery-emphasis-mark' + hash;
-    var classScaleHash = 'js-jquery-emphasis-scale-mark' + hash;
+    var classInlineBlockHash = 'emphasis-inline-block' + hash;
+    var classInlineHash = 'emphasis-inline' + hash;
+    var classMarkHash = 'emphasis-mark' + hash;
+    var classScaleHash = 'emphasis-scale-mark' + hash;
+    var classOverMarkHash = 'emphasis-over-mark' + hash;
+    var classUnderMarkHash = 'emphasis-under-mark' + hash;
+    var positionClassMap = {
+        'over': classOverMarkHash,
+        'under': classUnderMarkHash
+    };
 
     var uniqueId = 0;
     var markMap = {
@@ -83,6 +89,8 @@
             return;
         }
         initCSSRule.inited = true;
+
+        // .emphasis-inline-block
         addCSSRule('.' + classInlineBlockHash,
             'position:relative;' +
             'display:inline-block;_zoom:1;' +
@@ -92,12 +100,17 @@
             'margin:0;' +
             'padding:0 0 0.5em 0;' +
             'vertical-align: baseline;' +
-            '*vertical-align: -0.5em;' +
+            // '*vertical-align: -0.5em;' +
             'color:inherit;' +
             'font-size:inherit;' +
             'text-decoration:inherit;' +
             'line-height:inherit;'
         );
+        // .emphasis-inline-block.emphasis-over-mark
+        addCSSRule('.' + classInlineBlockHash + '.' + classOverMarkHash,
+            'padding:0.5em 0 0 0;'
+        );
+        // .emphasis-inline
         addCSSRule('.' + classInlineHash,
             'position:relative;' +
             // reset style
@@ -111,6 +124,7 @@
             'text-decoration:inherit;' +
             'line-height:inherit;'
         );
+
         var styleForBeforeClass =
             'position:absolute;' +
             'bottom: 0;' +
@@ -118,6 +132,7 @@
             'height: 1em;' +
             'line-height: 1em;' +
             'text-align: center;' +
+            'width: 100%;' +
             // reset style
             'float:none;' +
             'border:none;' +
@@ -127,12 +142,40 @@
             'color:inherit;' +
             'font-size: inherit;' +
             'text-decoration:inherit;';
-        addCSSRule('.' + classInlineHash + ':before', styleForBeforeClass);
+        // .emphasis-inline:before
+        addCSSRule('.' + classInlineHash + ':before',
+            styleForBeforeClass +
+            'bottom: -1em;'
+        );
+        // .emphasis-inline-block:before
         addCSSRule('.' + classInlineBlockHash + ':before', styleForBeforeClass);
-        addCSSRule('.' + classInlineHash + ':before', 'bottom: -1em;');
+
+        // .emphasis-inline.emphasis-scale-mark:before
         addCSSRule(
             '.' + classInlineHash + '.' + classScaleHash + ':before',
-           'bottom: -0.5em;'
+            'bottom: -0.5em;' +
+            'width: 200%;'
+        );
+        // .emphasis-inline-block.emhpasis-over-mark:before
+        addCSSRule(
+            '.' + classInlineBlockHash + '.' + classScaleHash + ':before',
+            'bottom: -0.5em;' +
+            'width: 200%;'
+        );
+        // .emphasis-inline-block.emphasis-over-mark:before
+        addCSSRule(
+            '.' + classInlineBlockHash + '.' + classOverMarkHash + ':before',
+            'top: 0;' +
+            'bottom: auto;'
+        );
+        // .emphasis-inline-block.emphasis-over-mark.emphasis-scale-mark:before
+        addCSSRule(
+            '.' + classInlineBlockHash +
+            '.' + classOverMarkHash +
+            '.' + classScaleHash + ':before',
+
+            'top: -0.5em;' +
+            'bottom: auto;'
         );
     }
 
@@ -298,11 +341,9 @@
         if (useScale) {
             // support `transform: scale(0.5);`
             markStyle = useScale[0] + ':scale(0.5);' +
-                useScale[1] + ':bottom left;' +
-                'width: 200%;';
+                useScale[1] + ':bottom left;';
         } else {
             markStyle = 'font-size:' + markFontSize + 'px;' +
-                        'width: 100%;' +
                         'height:' + markFontSize + 'px;' +
                         'line-height:' + markFontSize + 'px;';
         }
@@ -319,10 +360,12 @@
             'content:\'' + markInfo.character + '\';' +
             markStyle
         );
+        var positionClass = positionClassMap[markInfo.position];
         var prefixTag = '<span class="' +
                             normalClass + ' ' +
                             uniqueClass + ' ' +
-                            (useScale ? classScaleHash : '') +
+                            (useScale ? classScaleHash : '') + ' ' +
+                            positionClass +
                             '">';
         var suffixTag = '</span>';
 
