@@ -159,7 +159,6 @@
         // .emphasis-inline-block.emhpasis-over-mark:before
         addCSSRule(
             '.' + classInlineBlockHash + '.' + classScaleHash + ':before',
-            'bottom: -0.5em;' +
             'width: 200%;'
         );
         // .emphasis-inline-block.emphasis-over-mark:before
