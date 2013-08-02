@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>jQuery text-emphasis</title>
+    <meta name="Keywords" content="jQuery.emphasis,text-emphasis,css3,fallback"/>
+    <meta name="Description" content=""/>
+    <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
     <link href='http://fonts.googleapis.com/css?family=Autour+One' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="assets/google-code-prettify/prettify.css" />
     <link rel="stylesheet" href="assets/index.css" />
@@ -11,7 +14,7 @@
     <div class="container">
         <div class="header">
             <h1>jQuery.<span class="emphasis">emphasis</span>.js</h1>
-            <p>A lightweight javascript fallback for CSS3 <a class="emphasis" href="http://www.w3.org/TR/css-text-decor-3/#emphasis-marks" target="_blank"><code>text-emphasis</code></a>. It's a jQuery plugin.</p>
+            <p>A lightweight javascript fallback for CSS3 <a class="emphasis" href="http://www.w3.org/TR/css-text-decor-3/#emphasis-marks" target="_blank"><code>text-emphasis</code></a>. Depends on jQuery &gt;= 1.10.</p>
         </div>
         <div class="main">
 
@@ -24,7 +27,7 @@
                         <a href="demo.html" class="large button">Demo</a>
                     </li>
                 </ul>
-                <p>支持浏览器：IE 8+, Chrome, Firefox 4+, Safari 5+, Opera 12+, Mobile Safari(iOS 5+)</p>
+                <p>Tested on IE 8+, Chrome, Firefox 4+, Safari 5+, Opera 12+, Mobile Safari(iOS 5+)</p>
             </div>
 
             <h2>Getting Started</h2>
@@ -38,20 +41,20 @@ $('em').emphasis('dot');
             <h3><a href="#emphasis-text-emphasis" id="emphasis-text-emphasis"><code>.emphasis(text-emphasis)</code></a></h3>
             <dl>
                 <dt><code>text-emphasis</code></dt>
-                <dd>Type: String</dd>
+                <dd>Type: <code>String</code></dd>
                 <dd>A string representing <a href="http://www.w3.org/TR/css-text-decor-3/#text-emphasis" target="_blank">text-emphasis</a> style.</dd>
                 <dd>For example: <code>filled</code>, <code>dotted</code>, <code>filled sesame red</code>, <code>"@" #069</code>. You can also use value <code>none</code> to remove the style.</dd>
-                <dd>It's using <code>navigator.language || navigator.browserLanguage</code> to define which language was used. And it's not supportting vertical writing-mode.</dd>
+                <dd>It's using <code>navigator.language || navigator.browserLanguage</code> to define which language was used. And it's not supporting vertical writing-mode.</dd>
             </dl>
 
             <h3><a href="#emphasis-text-emphasis-position" id="emphasis-text-emphasis-position"><code>.emphasis(text-emphasis, text-emphasis-position)</code></a></h3>
             <dl>
                 <dt><code>text-emphasis</code></dt>
-                <dd>Type: String</dd>
+                <dd>Type: <code>String</code></dd>
                 <dd>A string representing <a href="http://www.w3.org/TR/css-text-decor-3/#text-emphasis" target="_blank">text-emphasis</a> style.</dd>
 
                 <dt><code>text-emphasis-position</code></dt>
-                <dd>Type: String</dd>
+                <dd>Type: <code>String</code></dd>
                 <dd>A string representing <a href="http://www.w3.org/TR/css-text-decor-3/#text-emphasis-position" target="_blank">text-emphasis-position</a> style. Currently it's not support "right" and "left" in vertical writing-mode.</dd>
             </dl>
 

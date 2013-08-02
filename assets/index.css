@@ -19,6 +19,7 @@ p, div, pre {
 }
 pre {
     padding: 1em;
+    overflow: auto;
 }
 code {
     font-size: 14px;
@@ -32,15 +33,17 @@ dd > code:after {
 }
 h1, h2, h3, h4, h5, h6 {
     margin: 0;
-    line-height: 2em;
+    line-height: 1em;
     font-size: 1em;
     font-family: 'Autour One', cursive;
 }
 h1 {
     font-size: 2em;
+    line-height: 2em;
 }
 h2 {
     font-size: 1.5em;
+    line-height: 2em;
 }
 h3:before {
     content: '>> ';
@@ -53,6 +56,7 @@ dl {
     font-family: 'Autour One', cursive;
 }
 .container {
+    margin: 0;
     overflow: hidden;
     background-color: #FFF;
     border: 1px solid #999;
@@ -65,15 +69,18 @@ dl {
 .header h1,
 .header p {
     margin: 0 auto;
-    width: 640px;
+    max-width: 640px;
 }
 .header p {
     margin-top: 1em;
 }
+.header p code {
+    font-size: inherit;
+}
 .main {
     overflow: hidden;
     margin: 0 auto;
-    padding: 0 0 2em 0;
+    padding: 1em 1em 2em;
     max-width: 640px;
 }
 .slogan {
@@ -86,6 +93,17 @@ dl {
     text-align: center;
 }
 
+@media all and (max-width: 640px) {
+    body {
+        margin: 0.5em;
+    }
+    .header h1 {
+        font-size: 1.5em;
+    }
+    dd {
+        margin-left: 1em;
+    }
+}
 
 /* Buttons styles */
 
