@@ -93,6 +93,38 @@ dl {
     text-align: center;
 }
 
+.example{
+    position: relative;
+    margin: 1em 0;
+    padding: 2em 1em 0;
+    background-color: white;
+    border-radius: 4px;
+}
+.example::after {
+    content: "Example";
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 3px 7px;
+    font-size: 12px;
+    font-weight: bold;
+    background-color: whiteSmoke;
+    color: #9DA0A4;
+    border-radius: 4px 0 4px 0;
+}
+.example pre {
+    margin: 1em -1em 0;
+    border-radius: 0 0 4px 4px;
+}
+.lang-zh {
+    font-family:"ff-tisa-web-pro-1","ff-tisa-web-pro-2",
+                "Lucida Grande",
+                "Hiragino Sans GB","Hiragino Sans GB W3",
+                "Microsoft YaHei",
+                "wenquanyi micro hei",
+                sans-serif;
+}
+
 @media all and (max-width: 640px) {
     body {
         margin: 0.5em;

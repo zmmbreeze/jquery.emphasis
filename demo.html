@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jQuery.emphasis.js - Demo</title>
+    <meta name="Keywords" content="jQuery.emphasis,text-emphasis,css3,fallback"/>
+    <meta name="Description" content="A lightweight javascript fallback for CSS3 text-emphasis."/>
+    <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+    <link href='http://fonts.googleapis.com/css?family=Autour+One' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="assets/google-code-prettify/prettify.css" />
+    <link rel="stylesheet" href="assets/index.css" /></head>
+<body>
+    <h1>jQuery.emphasis.js Demo</h1>
+    <div id="exmaple1" class="example lang-zh">When you're down, and the world seems dark and empty, <em>Your forever friend</em> lifts you up in spirits and makes that dark and empty world suddenly seem bright and full. <em>Your forever</em> friend gets you through the hard times, the sad times, and the confused times. If you turn and walk away, Your forever friend follows, If you lose you way, <em>Your forever friend</em> guides you and cheers you on.
+        <pre><code>$('#exmaple1 em:eq(0)').emphasis('filled');
+$('#exmaple1 em:eq(1)').emphasis('filled #069');
+$('#exmaple1 em:eq(2)').emphasis('open sesame', 'over');
+$('#exmaple1 em:eq(2)').emphasis('none', 'over');</code></pre>
+    </div>
+    <div id="exmaple2" class="example lang-zh">那年冬天，祖母死了，父亲的差使也交卸了，正是祸不单行的日子。我从北京到徐州，打算跟着<em>父 亲</em>奔丧回家。到徐州见着父亲，看见满院<em>狼 藉</em>的东西，又想起祖母，不禁簌簌地流下眼泪。父亲说：“<em>事已如此</em>，不必难过，好在天无绝人之路！”
+        <pre><code>$('#exmaple2 em:eq(0)').emphasis('filled');
+$('#exmaple2 em:eq(1)').emphasis('filled orange');
+$('#exmaple2 em:eq(2)').emphasis('open sesame', 'over');</code></pre>
+    </div>
+    
+
+    <script src="assets/google-code-prettify/prettify.js"></script>
+    <script src="assets/jquery-1.10.2.min.js"></script>
+    <script src="src/jQuery.emphasis.js"></script>
+    <script>
+    (function() {
+        var pres = document.getElementsByTagName('pre');
+        for (var i=0,l=pres.length; i<l; i++) {
+            pres[i].className = 'prettyprint';
+            $.globalEval($(pres[i]).text());
+        }
+        prettyPrint();
+    })();
+    </script>
+</body>
+</html>

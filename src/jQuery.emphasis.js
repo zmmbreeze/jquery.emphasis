@@ -195,7 +195,7 @@
     /**
      * add css rule for presudo-class `:before`
      *
-     * @param {string} type char|mark|color
+     * @param {string} type char|mark|color.
      * @param {string} key .
      * @param {string} style .
      * @return {string} className.
@@ -597,6 +597,9 @@
      *
      */
     MarkInfo.prototype.autoComplete = function() {
+        if (this.isNone) {
+            return;
+        }
         var language = navigator.language || navigator.browserLanguage;
         language = language.slice(0, 2);
 
@@ -660,7 +663,11 @@
             if (styleNames) {
                 // support css3 text-emphasis
 
-                if (markInfo != null) {
+                if (markInfo.isNone) {
+                    // >> $('em').emphasis('none');
+
+                    $el.css(styleNames[0], 'none');
+                } else {
                     // >> $('em').emphasis('dot');
 
                     var cssInput = {};
@@ -672,15 +679,18 @@
                             (markInfo.color || '');
                     cssInput[styleNames[1]] = markInfo.position;
                     $el.css(cssInput);
-                } else {
-                    // >> $('em').emphasis('none');
-
-                    $el.css(styleNames[0], 'none');
                 }
             } else {
                 // fallback
 
-                if (markInfo != null) {
+                if (markInfo.isNone) {
+                    // >> $('em').emphasis('none');
+
+                    $el.html($el.data(htmlHash));
+
+                    // forget
+                    $el.removeData(htmlHash);
+                } else {
                     // >> $('em').emphasis('dot');
 
                     // remember
@@ -696,14 +706,6 @@
                         markInfo.mark.charAt(0);
 
                     fakeEmphasis($el, markInfo);
-                } else {
-                    // >> $('em').emphasis('none');
-
-                    $el.html($el.data(htmlHash));
-
-                    // forget
-                    $el.removeData(htmlHash);
-
                 }
             }
         });
