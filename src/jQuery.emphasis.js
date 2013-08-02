@@ -5,12 +5,11 @@
     // hash code from 'jquery.emphasis'
     var hash = '9a91ab9b8e64d2cf7fce0616b66efbaf';
     var htmlHash = 'emphasisOldHtml' + hash;
-    var classInlineBlockHash = 'emphasis-inline-block' + hash;
-    var classInlineHash = 'emphasis-inline' + hash;
-    var classMarkHash = 'emphasis-mark' + hash;
-    var classScaleHash = 'emphasis-scale-mark' + hash;
-    var classOverMarkHash = 'emphasis-over-mark' + hash;
-    var classUnderMarkHash = 'emphasis-under-mark' + hash;
+    var classInlineBlockHash = 'inline-block' + hash;
+    var classInlineHash = 'inline' + hash;
+    var classScaleHash = 'scale' + hash;
+    var classOverMarkHash = 'over' + hash;
+    var classUnderMarkHash = 'under' + hash;
     var positionClassMap = {
         'over': classOverMarkHash,
         'under': classUnderMarkHash
@@ -93,7 +92,7 @@
         }
         initCSSRule.inited = true;
 
-        // .emphasis-inline-block
+        // .inline-block
         addCSSRule('.' + classInlineBlockHash,
             'position:relative;' +
             'display:inline-block;_zoom:1;' +
@@ -106,14 +105,16 @@
             // '*vertical-align: -0.5em;' +
             'color:inherit;' +
             'font-size:inherit;' +
+            'font-family:inherit;' +
             'text-decoration:inherit;' +
             'line-height:inherit;'
         );
-        // .emphasis-inline-block.emphasis-over-mark
+        // .inline-block.over
         addCSSRule('.' + classInlineBlockHash + '.' + classOverMarkHash,
             'padding:0.5em 0 0 0;'
         );
-        // .emphasis-inline
+
+        // .inline
         addCSSRule('.' + classInlineHash,
             'position:relative;' +
             // reset style
@@ -124,10 +125,10 @@
             'vertical-align: baseline;' +
             'color:inherit;' +
             'font-size:inherit;' +
+            'font-family:inherit;' +
             'text-decoration:inherit;' +
             'line-height:inherit;'
         );
-
         var styleForBeforeClass =
             'position:absolute;' +
             'bottom: 0;' +
@@ -144,55 +145,68 @@
             'vertical-align: baseline;' +
             'color:inherit;' +
             'font-size: inherit;' +
+            'font-family:inherit;' +
             'text-decoration: none;';
-        // .emphasis-inline:before
+        // .inline:before
         addCSSRule('.' + classInlineHash + ':before',
             styleForBeforeClass +
             'bottom: -1em;'
         );
-        // .emphasis-inline-block:before
+        // .inline-block:before
         addCSSRule(
             '.' + classInlineBlockHash + ':before',
             styleForBeforeClass
         );
 
-        // .emphasis-inline.emphasis-scale-mark:before
+        // .inline.scale:before
         addCSSRule(
             '.' + classInlineHash + '.' + classScaleHash + ':before',
             'bottom: -0.5em;' +
             'width: 200%;'
         );
-        // .emphasis-inline-block.emhpasis-over-mark:before
+        // .inline.over:before
+        addCSSRule(
+            '.' + classInlineHash + '.' + classOverMarkHash + ':before',
+            'top: -0.5em;' +
+            'bottom: auto;'
+        );
+
+        // .inline-block.scale:before
         addCSSRule(
             '.' + classInlineBlockHash + '.' + classScaleHash + ':before',
             'width: 200%;'
         );
-        // .emphasis-inline-block.emphasis-over-mark:before
+        // .inline-block.over:before
         addCSSRule(
             '.' + classInlineBlockHash + '.' + classOverMarkHash + ':before',
             'top: 0;' +
             'bottom: auto;'
         );
-        // .emphasis-inline-block.emphasis-over-mark.emphasis-scale-mark:before
-        addCSSRule(
-            '.' + classInlineBlockHash +
-            '.' + classOverMarkHash +
-            '.' + classScaleHash + ':before',
-
-            'top: -0.5em;' +
-            'bottom: auto;'
-        );
     }
 
-    var markHasCssRule = {};
-    function addBeforeCSSRule(mark, style) {
-        if (markHasCssRule[mark]) {
-            return markHasCssRule[mark];
+    // cache for presudo-class css rule
+    var addedCssRule = {
+        'char': {},
+        'color': {},
+        'mark': {}
+    };
+    /**
+     * add css rule for presudo-class `:before`
+     *
+     * @param {string} type char|mark|color
+     * @param {string} key .
+     * @param {string} style .
+     * @return {string} className.
+     */
+    function addBeforeCSSRule(type, key, style) {
+        var rules = addedCssRule[type];
+        if (rules[key]) {
+            return rules[key];
         }
 
-        var className = classMarkHash + (uniqueId++);
+        var className = type + (uniqueId++) + hash;
         addCSSRule('.' + className + ':before', style);
-        markHasCssRule[mark] = className;
+        rules[key] = className;
         return className;
     }
 
@@ -347,29 +361,51 @@
         if (useScale) {
             // support `transform: scale(0.5);`
             markStyle = useScale[0] + ':scale(0.5);' +
-                useScale[1] + ':bottom left;';
+                useScale[1] +
+                (markInfo.position === 'over' ? ':top left;' : ':bottom left;');
         } else {
             markStyle = 'font-size:' + markFontSize + 'px;' +
                         'height:' + markFontSize + 'px;' +
                         'line-height:' + markFontSize + 'px;';
         }
-        // use `!important` for color
-        if (markInfo.color) {
-            markStyle += 'color:' + markInfo.color + ' !important;';
-        }
-
-        // generate html
-        var normalClass =
-            (useInlineBlock ? classInlineBlockHash : classInlineHash);
-        var uniqueClass = addBeforeCSSRule(
-            markInfo.character,
-            'content:\'' + markInfo.character + '\';' +
+        // add css rules for mark `font-size or scale` relative style
+        var uniqueFontClass = addBeforeCSSRule(
+            'mark',
+            useScale ? markInfo.position : markFontSize,
             markStyle
         );
+
+        // add css rule for color
+        var uniqueColorClass = '';
+        if (markInfo.color) {
+            uniqueColorClass = addBeforeCSSRule(
+                'color',
+                markInfo.color,
+                // use `!important` for color
+                'color:' + markInfo.color + ' !important;'
+            );
+        }
+
+        // define inline / inline-block class
+        var normalClass =
+            (useInlineBlock ? classInlineBlockHash : classInlineHash);
+
+        // css rules for `content: '@'`
+        var uniqueCharClass = addBeforeCSSRule(
+            'char',
+            markInfo.character,
+            'content:\'' + markInfo.character + '\';'
+        );
+
+        // define position class
         var positionClass = positionClassMap[markInfo.position];
+
+        // generate html
         var prefixTag = '<span class="' +
                             normalClass + ' ' +
-                            uniqueClass + ' ' +
+                            uniqueCharClass + ' ' +
+                            uniqueFontClass + ' ' +
+                            uniqueColorClass + ' ' +
                             (useScale ? classScaleHash : '') + ' ' +
                             positionClass +
                             '">';
@@ -554,6 +590,7 @@
         language = language.slice(0, 2);
 
         var isJapanese = language === 'ja';
+        // TODO auto detect writingMode
         var writingMode = 'horizontal';
 
         // complete position
