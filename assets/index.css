@@ -80,6 +80,13 @@ dl {
     padding-bottom: 1em;
     border-bottom: 1px dashed #999;
 }
+
+.button-group {
+    width: 100%;
+    text-align: center;
+}
+
+
 /* Buttons styles */
 
 .button::-moz-focus-inner{
@@ -277,8 +284,6 @@ dl {
   font-size: 0; /* Inline block elements gap - fix */
   margin: 0;
   padding: 0;
-  border-bottom: 1px solid rgba(0, 0, 0, .07);
-  padding: 7px;
   -moz-border-radius: 7px;
   -webkit-border-radius: 7px;
   border-radius: 7px; 

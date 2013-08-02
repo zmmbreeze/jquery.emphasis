@@ -106,6 +106,7 @@
             'color:inherit;' +
             'font-size:inherit;' +
             'font-family:inherit;' +
+            'letter-spacing: normal;' +     // reset letter-spacing
             'text-decoration:inherit;' +
             'line-height:inherit;'
         );
@@ -126,6 +127,7 @@
             'color:inherit;' +
             'font-size:inherit;' +
             'font-family:inherit;' +
+            'letter-spacing: normal;' +     // reset letter-spacing
             'text-decoration:inherit;' +
             'line-height:inherit;'
         );
@@ -390,7 +392,7 @@
         var normalClass =
             (useInlineBlock ? classInlineBlockHash : classInlineHash);
 
-        // css rules for `content: '@'`
+        // css rules for `content: '@';`
         var uniqueCharClass = addBeforeCSSRule(
             'char',
             markInfo.character,
@@ -400,6 +402,13 @@
         // define position class
         var positionClass = positionClassMap[markInfo.position];
 
+        // fake letterSpacing
+        var letterSpacing = $parent.css('letter-spacing');
+        var marginRightStyle = '';
+        if (letterSpacing !== 'normal') {
+            marginRightStyle = 'margin-right:' + letterSpacing + ';';
+        }
+
         // generate html
         var prefixTag = '<span class="' +
                             normalClass + ' ' +
@@ -408,6 +417,8 @@
                             uniqueColorClass + ' ' +
                             (useScale ? classScaleHash : '') + ' ' +
                             positionClass +
+                            '" style="' +
+                            marginRightStyle +
                             '">';
         var suffixTag = '</span>';
 
