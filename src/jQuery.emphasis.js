@@ -5,6 +5,7 @@
     // hash code from 'jquery.emphasis'
     var hash = '9a91ab9b8e64d2cf7fce0616b66efbaf';
     var htmlHash = 'emphasisOldHtml' + hash;
+    var emphasisHash = 'emphasis' + hash;
     var classInlineBlockHash = 'inline-block' + hash;
     var classInlineHash = 'inline' + hash;
     var classScaleHash = 'scale' + hash;
@@ -281,8 +282,6 @@
      * @return {array} .
      */
     function supportEmphasis() {
-        return;
-        // TODO
         if (typeof supportEmphasis.result !== 'undefined') {
             return supportEmphasis.result;
         }
@@ -644,8 +643,8 @@
      * Add text-emphasis fallback.
      * TODO
      *
-     * @param {Object} $el .
-     * @param {Object} style .
+     * @param {string} styleAndColor .
+     * @param {string} position .
      */
     $.fn.emphasis = function(styleAndColor, position) {
 
@@ -669,15 +668,25 @@
 
                     $el.css(styleNames[0], 'none');
                 } else {
+                    if ($el.data(emphasisHash)) {
+                        return;
+                    }
+                    $el.data(emphasisHash, true);
                     // >> $('em').emphasis('dot');
 
                     var cssInput = {};
-                    cssInput[styleNames[0]] = '' +
-                            (markInfo.filled ? 'filled' : 'open') +
-                            ' ' +
-                            markInfo.mark +
-                            ' ' +
-                            (markInfo.color || '');
+                    if (markInfo.isStringMark) {
+                        // >> '@'
+                        cssInput[styleNames[0]] = '"' + markInfo.mark + '"';
+                    } else {
+                        // >> 'filled dot'
+                        cssInput[styleNames[0]] = '' +
+                                (markInfo.filled ? 'filled' : 'open') +
+                                ' ' +
+                                markInfo.mark +
+                                ' ' +
+                                (markInfo.color || '');
+                    }
                     cssInput[styleNames[1]] = markInfo.position;
                     $el.css(cssInput);
                 }
@@ -692,6 +701,10 @@
                     // forget
                     $el.removeData(htmlHash);
                 } else {
+                    if ($el.data(emphasisHash)) {
+                        return;
+                    }
+                    $el.data(emphasisHash, true);
                     // >> $('em').emphasis('dot');
 
                     // remember
