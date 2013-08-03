@@ -405,7 +405,8 @@
         // fake letterSpacing
         var letterSpacing = $parent.css('letter-spacing');
         var marginRightStyle = '';
-        if (letterSpacing !== 'normal') {
+        if (letterSpacing !== 'normal' &&
+            letterSpacing !== 0) {
             marginRightStyle = 'margin-right:' + letterSpacing + ';';
         }
 
@@ -709,6 +710,7 @@
                 }
             }
         });
+        return this;
     };
 
 })(jQuery);
