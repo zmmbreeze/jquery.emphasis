@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>jQuery.emphasis.js - Demo</title>
-    <meta name="Keywords" content="jQuery.emphasis,text-emphasis,css3,fallback"/>
+    <title>jquery.emphasis.js - Demo</title>
+    <meta name="Keywords" content="jquery.emphasis,text-emphasis,css3,fallback"/>
     <meta name="Description" content="A lightweight javascript fallback for CSS3 text-emphasis."/>
     <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
     <link href='http://fonts.googleapis.com/css?family=Autour+One' rel='stylesheet' type='text/css'>
@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="assets/index.css" /></head>
 <body class="page-demo">
 <div class="main">
-    <h1>jQuery.emphasis.js Demo</h1>
+    <h1>jquery.emphasis.js Demo</h1>
     <div id="example1" class="example lang-zh">When you're down, and the world seems dark and empty, <em>Your forever friend</em> lifts you up in spirits and makes that dark and empty world suddenly seem bright and full. <em>Your forever</em> friend gets you through the hard times, the sad times, and the confused times. If you turn and walk away, Your forever friend follows, If you lose you way, <em>Your forever friend</em> guides you and cheers you on.
         <pre><code>$('#example1 em').css('color', 'red');
 $('#example1 em:eq(0)').emphasis('filled');
@@ -40,7 +40,7 @@ $('#example2 em:eq(1), #example2 em:eq(3)')
     <h3>color</h3>
     <div id="example4" class="example">
         <span>Every cloud has a <em>silver</em> lining</span>!
-        <pre><code>$('#example4 em').css('color', '#069').emphasis('filled #c8c');</code></pre>
+        <pre><code>$('#example4 em').css('color', '#069').emphasis('filled orange');</code></pre>
     </div>
 
     <h3>block element</h3>
@@ -57,7 +57,7 @@ $('#example2 em:eq(1), #example2 em:eq(3)')
         It was the spring of <em>hope</em>,<br/>
         It was the winter of <em>despair</em>.
         </p>
-        <pre><code>$('#example5 em').emphasis('filled dot #c8c');
+        <pre><code>$('#example5 em').emphasis('filled dot orange');
 $('#example5 p').emphasis('filled dot');</code></pre>
     </div>
 
@@ -89,16 +89,6 @@ $('#example7 em:eq(1)').css('font-size', '12px')
                  .emphasis('"♥"');</code></pre>
     </div>
 
-    <h3>Special character</h3>
-    <div id="example8" class="example">
-        <p>Lift up your head <em>princess</em>, if not, the crown falls.
-        </p>
-        <pre><code>$('#example8 em').css('font-family', 'monospace')
-                 .css('font-style', 'normal')
-                 .css('font-size', '24px')
-                 .emphasis('"❤"');</code></pre>
-    </div>
-
     <h3>Special line-height</h3>
     <div id="example9" class="example">
         <dl>
@@ -109,13 +99,13 @@ $('#example7 em:eq(1)').css('font-size', '12px')
             <dt>with inline image</dt>
             <dd>There are no secrets to <em>success</em>.<img src="assets/20x50.png" alt=""> It is the result of preparation, hard work, and learning from failure.</dd>
         </dl>
-        <pre><code>$('#example9 em').emphasis('"♥"');</code></pre>
+        <pre><code>$('#example9 em').emphasis('circle');</code></pre>
     </div>
 </div>
 
     <script src="assets/google-code-prettify/prettify.js"></script>
     <script src="assets/jquery-1.10.2.min.js"></script>
-    <script src="src/jQuery.emphasis.js"></script>
+    <script src="bin/jquery.emphasis-0.1.min.js"></script>
     <script>
     (function() {
         var pres = document.getElementsByTagName('pre');

@@ -29,7 +29,7 @@ Know issues
 * Not support "right" and "left" position.
 * Not work right on inline-block element in some case.
 
-If you find more issue, welcome to [report it](https://github.com/zmmbreeze/jQuery.emphasis/issues).
+If you find more issue, welcome to [report it](https://github.com/zmmbreeze/jquery.emphasis/issues).
 
 LOG
 ---
