@@ -71,6 +71,14 @@ dl {
     margin: 0 auto;
     max-width: 640px;
 }
+.header h1 .emphasis {
+    background: #08c;
+    color: #FFF;
+    padding-top: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-radius: 5px;
+}
 .header p {
     margin-top: 1em;
 }
@@ -93,38 +101,6 @@ dl {
     text-align: center;
 }
 
-.example{
-    position: relative;
-    margin: 1em 0;
-    padding: 2em 1em 0;
-    background-color: white;
-    border-radius: 4px;
-}
-.example::after {
-    content: "Example";
-    position: absolute;
-    top: 0;
-    left: 0;
-    padding: 3px 7px;
-    font-size: 12px;
-    font-weight: bold;
-    background-color: whiteSmoke;
-    color: #9DA0A4;
-    border-radius: 4px 0 4px 0;
-}
-.example pre {
-    margin: 1em -1em 0;
-    border-radius: 0 0 4px 4px;
-}
-.lang-zh {
-    font-family:"ff-tisa-web-pro-1","ff-tisa-web-pro-2",
-                "Lucida Grande",
-                "Hiragino Sans GB","Hiragino Sans GB W3",
-                "Microsoft YaHei",
-                "wenquanyi micro hei",
-                sans-serif;
-}
-
 @media all and (max-width: 640px) {
     body {
         margin: 0.5em;
@@ -135,6 +111,100 @@ dl {
     dd {
         margin-left: 1em;
     }
+}
+
+/**
+ *
+ * page-demo
+ *
+ */
+.page-demo .main {
+    min-width: 304px;
+}
+
+@media all and (max-width: 320px) {
+    .page-demo .main {
+        padding: 0;
+    }
+}
+
+.example{
+    position: relative;
+    margin: 1em 0;
+    padding: 2em 1em 0;
+    background-color: white;
+    border-radius: 4px;
+}
+.example:after {
+    content: 'Example';
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 3px 7px;
+    font-size: 12px;
+    font-weight: bold;
+    background-color: whiteSmoke;
+    color: #9DA0A4;
+    border-radius: 4px 0 4px 0;
+}
+#example1:after {
+    content: 'Example1';
+}
+#example2:after {
+    content: 'Example2';
+}
+#example3:after {
+    content: 'Example3';
+}
+#example4:after {
+    content: 'Example4';
+}
+#example5:after {
+    content: 'Example5';
+}
+#example6:after {
+    content: 'Example6';
+}
+#example7:after {
+    content: 'Example7';
+}
+#example8:after {
+    content: 'Example8';
+}
+#example9:after {
+    content: 'Example9';
+}
+#example10:after {
+    content: 'Example10';
+}
+#example11:after {
+    content: 'Example11';
+}
+#example12:after {
+    content: 'Example12';
+}
+.example pre {
+    margin: 1em -1em 0;
+    border-radius: 0 0 4px 4px;
+}
+.example p:first-child {
+    margin-top: 0;
+}
+.example dt:before {
+    content: '>> ';
+}
+
+#example3 em {
+    letter-spacing: 5px;
+}
+
+.lang-zh {
+    font-family:"ff-tisa-web-pro-1","ff-tisa-web-pro-2",
+                "Lucida Grande",
+                "Hiragino Sans GB","Hiragino Sans GB W3",
+                "Microsoft YaHei",
+                "wenquanyi micro hei",
+                sans-serif;
 }
 
 /* Buttons styles */

@@ -58,6 +58,12 @@ $('em').emphasis('dot');
                 <dd>A string representing <a href="http://www.w3.org/TR/css-text-decor-3/#text-emphasis-position" target="_blank">text-emphasis-position</a> style. Currently it's not support "right" and "left" in vertical writing-mode.</dd>
             </dl>
 
+            <h2>Know issues</h2>
+            <ul>
+                <li>Not support "right" and "left" position.</li>
+                <li>Not work right on <code>inline-block</code> element in some case.</li>
+            </ul>
+            <p>If you find more issue, welcome to <a href="https://github.com/zmmbreeze/jQuery.emphasis/issues" target="_blank">report it</a>.</p>
         </div>
     </div>
     <script src="assets/google-code-prettify/prettify.js"></script>
@@ -71,7 +77,8 @@ $('em').emphasis('dot');
         }
         prettyPrint();
     })();
-    $('.emphasis').emphasis('filled');
+    $('.header h1 .emphasis').emphasis('filled #08c circle', 'under');
+    $('.emphasis').emphasis('filled dot', 'under');
     </script>
 </body>
 </html>
