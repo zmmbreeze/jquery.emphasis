@@ -5,9 +5,11 @@
     "keywords": [
         "text-emphasis",
         "emphasis",
-        "css3"
+        "css3",
+        "ui",
+        "effect"
     ],
-    "version": "0.1.0",
+    "version": "0.1.1",
     "author": {
         "name": "mzhou",
         "url": "http://mzhou.me"

@@ -1,3 +1,12 @@
+/*
+jQuery.emphasis.js
+
+Copyright 2013 mzhou / @zhoumm
+Version: 0.1.1
+License:
+    https://raw.github.com/zmmbreeze/jquery.emphasis/master/MIT-LICENTSE.txt
+*/
+
 /*global jQuery:false, document:false, navigator:false */
 
 (function($) {

@@ -34,4 +34,5 @@ If you find more issue, welcome to [report it](https://github.com/zmmbreeze/jque
 LOG
 ---
 
-* 0.1<br/>init
+* 0.1.0<br/>init
+* 0.1.1<br/>changed mainfest, added notation for src file.
