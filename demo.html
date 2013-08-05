@@ -108,6 +108,16 @@ $('#example7 em:eq(1)').css('font-size', '12px')
     <script src="bin/jquery.emphasis-0.1.min.js"></script>
     <script>
     (function() {
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-36422454-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+         var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+         ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+
         var pres = document.getElementsByTagName('pre');
         for (var i=0,l=pres.length; i<l; i++) {
             pres[i].className = 'prettyprint';
