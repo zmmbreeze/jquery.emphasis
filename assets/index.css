@@ -198,6 +198,15 @@ dl {
     letter-spacing: 5px;
 }
 
+#example11 p{
+    width: 100%;
+    -webkit-writing-mode: vertical-rl;
+    -moz-writing-mode: vertical-rl;
+    -ms-writing-mode: vertical-rl;
+    -o-writing-mode: vertical-rl;
+    writing-mode: vertical-rl;
+}
+
 .lang-zh {
     font-family:"ff-tisa-web-pro-1","ff-tisa-web-pro-2",
                 "Lucida Grande",

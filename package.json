@@ -1,0 +1,35 @@
+{
+  "name": "jQuery.emphasis.js",
+  "version": "0.1.1",
+  "description": "A lightweight javascript fallback for CSS3 text-emphasis.",
+  "preferGlobal": false,
+  "directories": {
+    "lib": "./src",
+    "bin": "./bin"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zmmbreeze/jquery.emphasis.git"
+  },
+  "bugs": {
+    "url": "https://github.com/zmmbreeze/jquery.emphasis/issues"
+  },
+  "keywords": [
+    "text-emphasis",
+    "emphasis",
+    "css3",
+    "ui",
+    "effect"
+  ],
+  "author": "MZhou <zmmbreeze0825@gmail.com> (http://mzhou.me)",
+  "license": {
+    "type": "MIT",
+    "url": "https://raw.github.com/zmmbreeze/jquery.emphasis/master/MIT-LICENTSE.txt"
+  },
+  "dependencies": {
+    "jquery": ">=1.10"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1"
+  }
+}

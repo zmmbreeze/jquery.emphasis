@@ -101,11 +101,31 @@ $('#example7 em:eq(1)').css('font-size', '12px')
         </dl>
         <pre><code>$('#example9 em').emphasis('circle');</code></pre>
     </div>
+
+    <h3>Priority test</h3>
+    <div id="example10" class="example">
+        <p>
+            East Asian documents <em>traditionally</em> use small symbols next to each glyph to <em>emphasize</em> a run of text.
+        </p>
+        <pre><code>$('#example10 em:eq(0)').emphasis('open sesame orange');
+$('#example10 p').emphasis('circle');
+$('#example10 em:eq(1)').emphasis('open sesame #069');</code></pre>
+    </div>
+
+    <!--
+    <h3>Vertical writing-mode</h3>
+    <div id="example11" class="example">
+        <p>
+            やさしい言葉（ことば）は、たとえ<em>簡単（かんたん）な言葉</em>でも、ずっとずっ と心（こころ）にこだまする。温柔的言语，就算是<em>简单一句话</em>，也会一直一直在心中回响。
+        </p>
+        <pre><code>$('#example11 em').emphasis('circle');</code></pre>
+    </div>
+    -->
 </div>
 
     <script src="assets/google-code-prettify/prettify.js"></script>
     <script src="assets/jquery-1.10.2.min.js"></script>
-    <script src="bin/jquery.emphasis-0.1.min.js"></script>
+    <script src="bin/jquery.emphasis.js"></script>
     <script>
     (function() {
         var _gaq = _gaq || [];
