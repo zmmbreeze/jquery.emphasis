@@ -1,6 +1,7 @@
 /*global classInlineBlockHash:false, classInlineHash:false,
 classOverMarkHash:false, classScaleHash:false,
 skipHtmlTagName:false, Util:false, positionClassMap:false,
+positionToOriginMap:false, isVerticalPosition:false,
 ignoreCharacter:false, MarkInfo:false, markMap:false */
 
 /**
@@ -178,6 +179,8 @@ Emphasis.prototype.fakeEmphasis = function($el, markInfo, level) {
     }
 };
 
+
+
 /**
  * text node to html with mark
  *
@@ -198,6 +201,11 @@ Emphasis.prototype.textToHtml = function($node, $parent, markInfo) {
         useInlineBlock = true;
     }
 
+    var isVertical = isVerticalPosition[markInfo.position];
+    if (isVertical) {
+        console.log(markInfo);
+    }
+
     // calculate mark style
     var useScale = Util.supportScale();
     var markStyle;
@@ -205,16 +213,20 @@ Emphasis.prototype.textToHtml = function($node, $parent, markInfo) {
         // support `transform: scale(0.5);`
         markStyle = useScale[0] + ':scale(0.5);' +
             useScale[1] +
-            (markInfo.position === 'over' ? ':top left;' : ':bottom left;');
+            positionToOriginMap[markInfo.position];
     } else {
-        markStyle = 'font-size:' + markFontSize + 'px;' +
-                    'height:' + markFontSize + 'px;' +
-                    'line-height:' + markFontSize + 'px;';
+        if (isVertical) {
+            markStyle = 'font-size:' + markFontSize + 'px;';
+        } else {
+            markStyle = 'font-size:' + markFontSize + 'px;' +
+                        'height:' + markFontSize + 'px;' +
+                        'line-height:' + markFontSize + 'px;';
+        }
     }
     // add css rules for mark `font-size or scale` relative style
     var uniqueFontClass = Util.addBeforeCSSRule(
         'mark',
-        useScale ? markInfo.position : markFontSize,
+        markInfo.position + markFontSize,
         markStyle
     );
 
@@ -248,7 +260,8 @@ Emphasis.prototype.textToHtml = function($node, $parent, markInfo) {
     var marginRightStyle = '';
     if (letterSpacing !== 'normal' &&
         letterSpacing !== 0) {
-        marginRightStyle = 'margin-right:' + letterSpacing + ';';
+        marginRightStyle = (isVertical ? 'margin-bottom:' : 'margin-right:') +
+                            letterSpacing + ';';
     }
 
     // generate html

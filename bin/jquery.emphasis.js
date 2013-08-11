@@ -8,10 +8,24 @@ var classInlineBlockHash = 'inline-block' + hash;
 var classInlineHash = 'inline' + hash;
 var classScaleHash = 'scale' + hash;
 var classOverMarkHash = 'over' + hash;
+var classRightMarkHash = 'right' + hash;
+var classLeftMarkHash = 'left' + hash;
 var classUnderMarkHash = 'under' + hash;
 var positionClassMap = {
     'over': classOverMarkHash,
-    'under': classUnderMarkHash
+    'under': classUnderMarkHash,
+    'right': classRightMarkHash,
+    'left': classLeftMarkHash
+};
+var positionToOriginMap = {
+    'over': ':top left;',
+    'under': ':bottom left;',
+    'right': ':top right;',
+    'left': ':top left;'
+};
+var isVerticalPosition = {
+    'right': 1,
+    'left': 1
 };
 
 var uniqueId = 0;
@@ -58,7 +72,8 @@ var skipHtmlTagName = {
 
 
 /*global hash:false, uniqueId:false, classInlineBlockHash:false,
-classInlineHash:false, classOverMarkHash:false, classScaleHash:false */
+classInlineHash:false, classOverMarkHash:false, classScaleHash:false,
+classRightMarkHash:false, classLeftMarkHash:false*/
 
 var styleSheet;
 // cache for presudo-class css rule
@@ -181,6 +196,7 @@ var Util = {
      */
     supportEmphasis: function supportEmphasis() {
         // TODO
+        return false;
         if (typeof supportEmphasis.result !== 'undefined') {
             return supportEmphasis.result;
         }
@@ -255,11 +271,6 @@ var Util = {
             'text-decoration:inherit;' +
             'line-height:inherit;'
         );
-        // .inline-block.over
-        this.addCSSRule('.' + classInlineBlockHash + '.' + classOverMarkHash,
-            'padding:0.5em 0 0 0;'
-        );
-
         // .inline
         this.addCSSRule('.' + classInlineHash,
             'position:relative;' +
@@ -305,11 +316,23 @@ var Util = {
             styleForBeforeClass
         );
 
+
         // .inline.scale:before
         this.addCSSRule(
             '.' + classInlineHash + '.' + classScaleHash + ':before',
             'bottom: -0.5em;' +
             'width: 200%;'
+        );
+        // .inline-block.scale:before
+        this.addCSSRule(
+            '.' + classInlineBlockHash + '.' + classScaleHash + ':before',
+            'width: 200%;'
+        );
+
+        // over
+        // .inline-block.over
+        this.addCSSRule('.' + classInlineBlockHash + '.' + classOverMarkHash,
+            'padding:0.5em 0 0 0;'
         );
         // .inline.over:before
         this.addCSSRule(
@@ -317,18 +340,61 @@ var Util = {
             'top: -0.5em;' +
             'bottom: auto;'
         );
-
-        // .inline-block.scale:before
-        this.addCSSRule(
-            '.' + classInlineBlockHash + '.' + classScaleHash + ':before',
-            'width: 200%;'
-        );
         // .inline-block.over:before
         this.addCSSRule(
             '.' + classInlineBlockHash + '.' + classOverMarkHash + ':before',
             'top: 0;' +
             'bottom: auto;'
         );
+
+
+        // right
+        // .inline-block.right
+        this.addCSSRule('.' + classInlineBlockHash + '.' + classRightMarkHash,
+            'padding:0 0.5em 0 0;'
+        );
+        // .right:before
+        this.addCSSRule(
+            '.' + classRightMarkHash + ':before',
+            'vertical-align:middle;' +
+            'height: 100%;' +
+            'line-height: 100%;' +
+            'width: 1em;' +
+            'top: 0;' +
+            'background: red;' +
+            'bottom: auto;'
+        );
+        // .inline.right:before
+        this.addCSSRule(
+            '.' + classInlineHash + '.' + classRightMarkHash + ':before',
+            'right: -0.5em;'
+        );
+        // .inline-block.right:before
+        this.addCSSRule(
+            '.' + classInlineBlockHash + '.' + classRightMarkHash + ':before',
+            'right: 0;'
+        );
+        // .right.scale:before
+        this.addCSSRule(
+            '.' + classRightMarkHash + '.' + classScaleHash + ':before',
+            'height: 200%;' +
+            'line-height: 200%;' +
+            'width: 1em;'
+        );
+        /*
+        // .inline.scale.right:before
+        this.addCSSRule(
+            '.' + classInlineHash + '.' + classScaleHash +
+                '.' + classRightMarkHash + ':before',
+            'line-height: 2em;'
+        );
+        // .inline-block.scale.right:before
+        this.addCSSRule(
+            '.' + classInlineBlockHash + '.' + classScaleHash +
+                '.' + classRightMarkHash + ':before',
+            'line-height: 2em;'
+        );
+        */
     },
 
     /**
@@ -380,9 +446,6 @@ var Util = {
     }
 };
 
-var rString = /['"]([^'"]+)['"]/;
-var rMark = /(dot|circle|double-circle|triangle|sesame)/;
-var rPosition = /(under|over|left|right)/;
 var rString = /['"]([^'"]+)['"]/;
 var rMark = /(dot|circle|double-circle|triangle|sesame)/;
 var rPosition = /(under|over|left|right)/;
@@ -472,6 +535,7 @@ MarkInfo.prototype.parse = function(styleAndColor, position) {
             setResult = this.set('mark', r[1]);
         } else {
             // >> color like 'red'
+            // TODO validate color param
             setResult = this.set('color', $.trim(value));
         }
 
@@ -538,6 +602,7 @@ MarkInfo.prototype.autoComplete = function() {
 /*global classInlineBlockHash:false, classInlineHash:false,
 classOverMarkHash:false, classScaleHash:false,
 skipHtmlTagName:false, Util:false, positionClassMap:false,
+positionToOriginMap:false, isVerticalPosition:false,
 ignoreCharacter:false, MarkInfo:false, markMap:false */
 
 /**
@@ -715,6 +780,8 @@ Emphasis.prototype.fakeEmphasis = function($el, markInfo, level) {
     }
 };
 
+
+
 /**
  * text node to html with mark
  *
@@ -735,6 +802,11 @@ Emphasis.prototype.textToHtml = function($node, $parent, markInfo) {
         useInlineBlock = true;
     }
 
+    var isVertical = isVerticalPosition[markInfo.position];
+    if (isVertical) {
+        console.log(markInfo);
+    }
+
     // calculate mark style
     var useScale = Util.supportScale();
     var markStyle;
@@ -742,16 +814,20 @@ Emphasis.prototype.textToHtml = function($node, $parent, markInfo) {
         // support `transform: scale(0.5);`
         markStyle = useScale[0] + ':scale(0.5);' +
             useScale[1] +
-            (markInfo.position === 'over' ? ':top left;' : ':bottom left;');
+            positionToOriginMap[markInfo.position];
     } else {
-        markStyle = 'font-size:' + markFontSize + 'px;' +
-                    'height:' + markFontSize + 'px;' +
-                    'line-height:' + markFontSize + 'px;';
+        if (isVertical) {
+            markStyle = 'font-size:' + markFontSize + 'px;';
+        } else {
+            markStyle = 'font-size:' + markFontSize + 'px;' +
+                        'height:' + markFontSize + 'px;' +
+                        'line-height:' + markFontSize + 'px;';
+        }
     }
     // add css rules for mark `font-size or scale` relative style
     var uniqueFontClass = Util.addBeforeCSSRule(
         'mark',
-        useScale ? markInfo.position : markFontSize,
+        markInfo.position + markFontSize,
         markStyle
     );
 
@@ -785,7 +861,8 @@ Emphasis.prototype.textToHtml = function($node, $parent, markInfo) {
     var marginRightStyle = '';
     if (letterSpacing !== 'normal' &&
         letterSpacing !== 0) {
-        marginRightStyle = 'margin-right:' + letterSpacing + ';';
+        marginRightStyle = (isVertical ? 'margin-bottom:' : 'margin-right:') +
+                            letterSpacing + ';';
     }
 
     // generate html

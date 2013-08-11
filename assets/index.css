@@ -206,6 +206,9 @@ dl {
     -o-writing-mode: vertical-rl;
     writing-mode: vertical-rl;
 }
+#example11 em {
+    letter-spacing: 5px;
+}
 
 .lang-zh {
     font-family:"ff-tisa-web-pro-1","ff-tisa-web-pro-2",

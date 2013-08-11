@@ -5,10 +5,24 @@ var classInlineBlockHash = 'inline-block' + hash;
 var classInlineHash = 'inline' + hash;
 var classScaleHash = 'scale' + hash;
 var classOverMarkHash = 'over' + hash;
+var classRightMarkHash = 'right' + hash;
+var classLeftMarkHash = 'left' + hash;
 var classUnderMarkHash = 'under' + hash;
 var positionClassMap = {
     'over': classOverMarkHash,
-    'under': classUnderMarkHash
+    'under': classUnderMarkHash,
+    'right': classRightMarkHash,
+    'left': classLeftMarkHash
+};
+var positionToOriginMap = {
+    'over': ':top left;',
+    'under': ':bottom left;',
+    'right': ':top right;',
+    'left': ':top left;'
+};
+var isVerticalPosition = {
+    'right': 1,
+    'left': 1
 };
 
 var uniqueId = 0;

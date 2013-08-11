@@ -12,115 +12,15 @@
 <body class="page-demo">
 <div class="main">
     <h1>jQuery.emphasis.js Demo</h1>
-    <div id="example1" class="example lang-zh">When you're down, and the world seems dark and empty, <em>Your forever friend</em> lifts you up in spirits and makes that dark and empty world suddenly seem bright and full. <em>Your forever</em> friend gets you through the hard times, the sad times, and the confused times. If you turn and walk away, Your forever friend follows, If you lose you way, <em>Your forever friend</em> guides you and cheers you on.
-        <pre><code>$('#example1 em').css('color', 'red');
-$('#example1 em:eq(0)').emphasis('filled');
-$('#example1 em:eq(1)').emphasis('dot #069');
-$('#example1 em:eq(2)').emphasis('open sesame', 'over');</code></pre>
-    </div>
 
-    <h2>Different language</h2>
-    <div id="example2" class="example lang-zh">
-        <p>過去（かこ）から逃（に）げるのは許（ゆる）してやる。だけどな、せめて<em>今と明日</em>からは、逃げんじゃねぇよ。原谅你逃避过去，但是，至少不要逃避<em>现在和明天</em>啊。<small>---《无头骑士异闻录》</small></p>
-        <p>やさしい言葉（ことば）は、たとえ<em>簡単（かんたん）な言葉</em>でも、ずっとずっ と心（こころ）にこだまする。温柔的言语，就算是<em>简单一句话</em>，也会一直一直在心中回响。</p>
-        <pre><code>$('#example2 em:eq(0), #example2 em:eq(2)')
-    .emphasis('open sesame', 'over');
-$('#example2 em:eq(1), #example2 em:eq(3)')
-    .emphasis('filled dot', 'under');</code></pre>
-    </div>
 
-    <h2>Special case</h2>
-
-    <h3>letter-spacing</h3>
-    <div id="example3" class="example">
-        <span>Fr<em>eeeeeeeeeeeeeeeeeeeee</em>dom</span>!
-        <pre><code>$('#example3 span').emphasis('filled');</code></pre>
-    </div>
-
-    <h3>color</h3>
-    <div id="example4" class="example">
-        <span>Every cloud has a <em>silver</em> lining</span>!
-        <pre><code>$('#example4 em').css('color', '#069').emphasis('filled orange');</code></pre>
-    </div>
-
-    <h3>block element</h3>
-    <div id="example5" class="example">
-        <p>
-        It was the <em>best</em> of times,<br/>
-        It was the <em>worst</em> of times,<br/>
-        It was the age of <em>wisdom</em>,<br/>
-        It was the age of <em>foolishness</em>,<br/>
-        It was the epoch of <em>belief</em>,<br/>
-        It was the epoch of <em>incredulity</em>,<br/>
-        It was the season of <em>Light</em>,<br/>
-        It was the season of <em>Darkness</em>,<br/>
-        It was the spring of <em>hope</em>,<br/>
-        It was the winter of <em>despair</em>.
-        </p>
-        <pre><code>$('#example5 em').emphasis('filled dot orange');
-$('#example5 p').emphasis('filled dot');</code></pre>
-    </div>
-
-    <h3>emphasis('none')</h3>
-    <div id="example6" class="example">
-        <p>There is not an emphasis.
-        </p>
-        <pre><code>$('#example6 p').emphasis('dot')
-                .emphasis('none');</code></pre>
-    </div>
-
-    <h3>Different font-size</h3>
-    <div id="example7" class="example">
-        <p>Browser like <em>chrome, firefox, opera, safari</em> can setup the <em>minimal font-size</em>. It will effect this plugin if the browser not support CSS3 <code>transform</code>.
-        </p>
-        <pre><code>$('#example7 em:eq(0)').css('font-size', '24px')
-                       .emphasis('dot');
-$('#example7 em:eq(1)').css('font-size', '12px')
-                       .emphasis('dot');</code></pre>
-    </div>
-
-    <h3>Special character</h3>
-    <div id="example8" class="example">
-        <p>Lift up your head <em>princess</em>, if not, the crown falls.
-        </p>
-        <pre><code>$('#example8 em').css('font-family', 'monospace')
-                 .css('font-style', 'normal')
-                 .css('font-size', '24px')
-                 .emphasis('"♥"');</code></pre>
-    </div>
-
-    <h3>Special line-height</h3>
-    <div id="example9" class="example">
-        <dl>
-            <dt><code>line-height: normal;</code></dt>
-            <dd style="line-height:normal">Behind every <em>successful</em> man there's a lot u unsuccessful years.</dd>
-            <dt><code>line-height: 200%;</code></dt>
-            <dd style="line-height:200%;">I think <em>success</em> has no rules, but you can learn a lot from failure.</dd>
-            <dt>with inline image</dt>
-            <dd>There are no secrets to <em>success</em>.<img src="assets/20x50.png" alt=""> It is the result of preparation, hard work, and learning from failure.</dd>
-        </dl>
-        <pre><code>$('#example9 em').emphasis('circle');</code></pre>
-    </div>
-
-    <h3>Priority test</h3>
-    <div id="example10" class="example">
-        <p>
-            East Asian documents <em>traditionally</em> use small symbols next to each glyph to <em>emphasize</em> a run of text.
-        </p>
-        <pre><code>$('#example10 em:eq(0)').emphasis('open sesame orange');
-$('#example10 p').emphasis('circle');
-$('#example10 em:eq(1)').emphasis('open sesame #069');</code></pre>
-    </div>
-
-    <!--
     <h3>Vertical writing-mode</h3>
     <div id="example11" class="example">
         <p>
             やさしい言葉（ことば）は、たとえ<em>簡単（かんたん）な言葉</em>でも、ずっとずっ と心（こころ）にこだまする。温柔的言语，就算是<em>简单一句话</em>，也会一直一直在心中回响。
         </p>
-        <pre><code>$('#example11 em').emphasis('circle');</code></pre>
+        <pre><code>$('#example11 em').emphasis('"@"', 'right');</code></pre>
     </div>
-    -->
 </div>
 
     <script src="assets/google-code-prettify/prettify.js"></script>

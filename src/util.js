@@ -1,5 +1,6 @@
 /*global hash:false, uniqueId:false, classInlineBlockHash:false,
-classInlineHash:false, classOverMarkHash:false, classScaleHash:false */
+classInlineHash:false, classOverMarkHash:false, classScaleHash:false,
+classRightMarkHash:false, classLeftMarkHash:false*/
 
 var styleSheet;
 // cache for presudo-class css rule
@@ -122,6 +123,7 @@ var Util = {
      */
     supportEmphasis: function supportEmphasis() {
         // TODO
+        return false;
         if (typeof supportEmphasis.result !== 'undefined') {
             return supportEmphasis.result;
         }
@@ -196,11 +198,6 @@ var Util = {
             'text-decoration:inherit;' +
             'line-height:inherit;'
         );
-        // .inline-block.over
-        this.addCSSRule('.' + classInlineBlockHash + '.' + classOverMarkHash,
-            'padding:0.5em 0 0 0;'
-        );
-
         // .inline
         this.addCSSRule('.' + classInlineHash,
             'position:relative;' +
@@ -246,11 +243,23 @@ var Util = {
             styleForBeforeClass
         );
 
+
         // .inline.scale:before
         this.addCSSRule(
             '.' + classInlineHash + '.' + classScaleHash + ':before',
             'bottom: -0.5em;' +
             'width: 200%;'
+        );
+        // .inline-block.scale:before
+        this.addCSSRule(
+            '.' + classInlineBlockHash + '.' + classScaleHash + ':before',
+            'width: 200%;'
+        );
+
+        // over
+        // .inline-block.over
+        this.addCSSRule('.' + classInlineBlockHash + '.' + classOverMarkHash,
+            'padding:0.5em 0 0 0;'
         );
         // .inline.over:before
         this.addCSSRule(
@@ -258,18 +267,61 @@ var Util = {
             'top: -0.5em;' +
             'bottom: auto;'
         );
-
-        // .inline-block.scale:before
-        this.addCSSRule(
-            '.' + classInlineBlockHash + '.' + classScaleHash + ':before',
-            'width: 200%;'
-        );
         // .inline-block.over:before
         this.addCSSRule(
             '.' + classInlineBlockHash + '.' + classOverMarkHash + ':before',
             'top: 0;' +
             'bottom: auto;'
         );
+
+
+        // right
+        // .inline-block.right
+        this.addCSSRule('.' + classInlineBlockHash + '.' + classRightMarkHash,
+            'padding:0 0.5em 0 0;'
+        );
+        // .right:before
+        this.addCSSRule(
+            '.' + classRightMarkHash + ':before',
+            'vertical-align:middle;' +
+            'height: 100%;' +
+            'line-height: 100%;' +
+            'width: 1em;' +
+            'top: 0;' +
+            'background: red;' +
+            'bottom: auto;'
+        );
+        // .inline.right:before
+        this.addCSSRule(
+            '.' + classInlineHash + '.' + classRightMarkHash + ':before',
+            'right: -0.5em;'
+        );
+        // .inline-block.right:before
+        this.addCSSRule(
+            '.' + classInlineBlockHash + '.' + classRightMarkHash + ':before',
+            'right: 0;'
+        );
+        // .right.scale:before
+        this.addCSSRule(
+            '.' + classRightMarkHash + '.' + classScaleHash + ':before',
+            'height: 200%;' +
+            'line-height: 200%;' +
+            'width: 1em;'
+        );
+        /*
+        // .inline.scale.right:before
+        this.addCSSRule(
+            '.' + classInlineHash + '.' + classScaleHash +
+                '.' + classRightMarkHash + ':before',
+            'line-height: 2em;'
+        );
+        // .inline-block.scale.right:before
+        this.addCSSRule(
+            '.' + classInlineBlockHash + '.' + classScaleHash +
+                '.' + classRightMarkHash + ':before',
+            'line-height: 2em;'
+        );
+        */
     },
 
     /**

@@ -1,9 +1,6 @@
 var rString = /['"]([^'"]+)['"]/;
 var rMark = /(dot|circle|double-circle|triangle|sesame)/;
 var rPosition = /(under|over|left|right)/;
-var rString = /['"]([^'"]+)['"]/;
-var rMark = /(dot|circle|double-circle|triangle|sesame)/;
-var rPosition = /(under|over|left|right)/;
 /**
  * MarkInfo
  *
@@ -90,6 +87,7 @@ MarkInfo.prototype.parse = function(styleAndColor, position) {
             setResult = this.set('mark', r[1]);
         } else {
             // >> color like 'red'
+            // TODO validate color param
             setResult = this.set('color', $.trim(value));
         }
 
