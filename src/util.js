@@ -1,13 +1,8 @@
 /*global hash:false, uniqueId:false, classInlineBlockHash:false,
-classInlineHash:false, classOverMarkHash:false, classScaleHash:false */
+classInlineHash:false, classOverMarkHash:false, classScaleHash:false,
+styleSheet:true, addedCssRule:false */
 
-var styleSheet;
-// cache for presudo-class css rule
-var addedCssRule = {
-    'char': {},
-    'color': {},
-    'mark': {}
-};
+
 var Util = {
     /**
      * add CSS rule at last.

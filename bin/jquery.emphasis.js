@@ -56,10 +56,15 @@ var skipHtmlTagName = {
     'input': 1
 };
 
+/* RegExp */
+var rString = /['"]([^'"]+)['"]/;
+var rMark = /(dot|circle|double-circle|triangle|sesame)/;
+var rPosition = /(under|over|left|right)/;
+var rString = /['"]([^'"]+)['"]/;
+var rMark = /(dot|circle|double-circle|triangle|sesame)/;
+var rPosition = /(under|over|left|right)/;
 
-/*global hash:false, uniqueId:false, classInlineBlockHash:false,
-classInlineHash:false, classOverMarkHash:false, classScaleHash:false */
-
+// styleSheet used to add css style
 var styleSheet;
 // cache for presudo-class css rule
 var addedCssRule = {
@@ -67,6 +72,12 @@ var addedCssRule = {
     'color': {},
     'mark': {}
 };
+
+/*global hash:false, uniqueId:false, classInlineBlockHash:false,
+classInlineHash:false, classOverMarkHash:false, classScaleHash:false,
+styleSheet:true, addedCssRule:false */
+
+
 var Util = {
     /**
      * add CSS rule at last.
@@ -380,12 +391,10 @@ var Util = {
     }
 };
 
-var rString = /['"]([^'"]+)['"]/;
-var rMark = /(dot|circle|double-circle|triangle|sesame)/;
-var rPosition = /(under|over|left|right)/;
-var rString = /['"]([^'"]+)['"]/;
-var rMark = /(dot|circle|double-circle|triangle|sesame)/;
-var rPosition = /(under|over|left|right)/;
+/*jshint eqnull:true, boss: true */
+/*global rString:false, rMark:false, rPosition:false, rString:false,
+rMark:false, rPosition:false, navigator:false, $:false */
+
 /**
  * MarkInfo
  *

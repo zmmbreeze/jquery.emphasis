@@ -53,3 +53,19 @@ var skipHtmlTagName = {
     'input': 1
 };
 
+/* RegExp */
+var rString = /['"]([^'"]+)['"]/;
+var rMark = /(dot|circle|double-circle|triangle|sesame)/;
+var rPosition = /(under|over|left|right)/;
+var rString = /['"]([^'"]+)['"]/;
+var rMark = /(dot|circle|double-circle|triangle|sesame)/;
+var rPosition = /(under|over|left|right)/;
+
+// styleSheet used to add css style
+var styleSheet;
+// cache for presudo-class css rule
+var addedCssRule = {
+    'char': {},
+    'color': {},
+    'mark': {}
+};

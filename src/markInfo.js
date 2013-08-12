@@ -1,9 +1,7 @@
-var rString = /['"]([^'"]+)['"]/;
-var rMark = /(dot|circle|double-circle|triangle|sesame)/;
-var rPosition = /(under|over|left|right)/;
-var rString = /['"]([^'"]+)['"]/;
-var rMark = /(dot|circle|double-circle|triangle|sesame)/;
-var rPosition = /(under|over|left|right)/;
+/*jshint eqnull:true, boss: true */
+/*global rString:false, rMark:false, rPosition:false, rString:false,
+rMark:false, rPosition:false, navigator:false, $:false */
+
 /**
  * MarkInfo
  *
