@@ -43,3 +43,4 @@ LOG
 * 0.2.0<br/>reconstruction
 <br/>fix priority bug
 <br/>use grunt
+<br/>update index page
