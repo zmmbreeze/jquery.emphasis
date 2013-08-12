@@ -201,13 +201,18 @@ Emphasis.prototype.textToHtml = function($node, $parent, markInfo) {
         useInlineBlock = true;
     }
 
+    // writing-mode is vertical
     var isVertical = isVerticalPosition[markInfo.position];
     if (isVertical) {
         console.log(markInfo);
     }
 
     // calculate mark style
-    var useScale = Util.supportScale();
+
+    // chrome has a bug when using vertical writing-mode and transform:scale
+    // http://jsbin.com/upiyot/1/
+    var useScale = !isVertical && Util.supportScale();
+
     var markStyle;
     if (useScale) {
         // support `transform: scale(0.5);`

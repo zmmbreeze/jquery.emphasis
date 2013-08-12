@@ -356,6 +356,7 @@ var Util = {
         // .right:before
         this.addCSSRule(
             '.' + classRightMarkHash + ':before',
+            'left:auto;' +
             'vertical-align:middle;' +
             'height: 100%;' +
             'line-height: 100%;' +
@@ -374,27 +375,6 @@ var Util = {
             '.' + classInlineBlockHash + '.' + classRightMarkHash + ':before',
             'right: 0;'
         );
-        // .right.scale:before
-        this.addCSSRule(
-            '.' + classRightMarkHash + '.' + classScaleHash + ':before',
-            'height: 200%;' +
-            'line-height: 200%;' +
-            'width: 1em;'
-        );
-        /*
-        // .inline.scale.right:before
-        this.addCSSRule(
-            '.' + classInlineHash + '.' + classScaleHash +
-                '.' + classRightMarkHash + ':before',
-            'line-height: 2em;'
-        );
-        // .inline-block.scale.right:before
-        this.addCSSRule(
-            '.' + classInlineBlockHash + '.' + classScaleHash +
-                '.' + classRightMarkHash + ':before',
-            'line-height: 2em;'
-        );
-        */
     },
 
     /**
@@ -802,13 +782,18 @@ Emphasis.prototype.textToHtml = function($node, $parent, markInfo) {
         useInlineBlock = true;
     }
 
+    // writing-mode is vertical
     var isVertical = isVerticalPosition[markInfo.position];
     if (isVertical) {
         console.log(markInfo);
     }
 
     // calculate mark style
-    var useScale = Util.supportScale();
+
+    // chrome has a bug when using vertical writing-mode and transform:scale
+    // http://jsbin.com/upiyot/1/
+    var useScale = !isVertical && Util.supportScale();
+
     var markStyle;
     if (useScale) {
         // support `transform: scale(0.5);`

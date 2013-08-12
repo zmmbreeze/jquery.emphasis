@@ -207,7 +207,8 @@ dl {
     writing-mode: vertical-rl;
 }
 #example11 em {
-    letter-spacing: 5px;
+    font-style: normal;
+    line-height: 2;
 }
 
 .lang-zh {
