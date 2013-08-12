@@ -1,7 +1,11 @@
 jQuery.emphasis.js
 ===============
 
-A lightweight javascript fallback for CSS3 [text-emphasis](http://www.w3.org/TR/css-text-decor-3/#emphasis-marks). Depends on jQuery >= 1.10. Tested on IE 8+, Chrome, Firefox 4+, Safari 5+, Opera 12+, Mobile Safari(iOS 5+)
+A lightweight javascript fallback for CSS3 [text-emphasis](http://www.w3.org/TR/css-text-decor-3/#emphasis-marks). It’s really useful for East Asian documents. Using small symbols next to each glyph to emphasize a run of text.
+
+![demo](./assets/demo.png)
+
+Depends on jQuery >= 1.10. Tested on IE 8+, Chrome, Firefox 4+, Safari 5+, Opera 12+, Mobile Safari(iOS 5+)
 
 Getting Started
 ---
@@ -36,3 +40,6 @@ LOG
 
 * 0.1.0<br/>init
 * 0.1.1<br/>changed mainfest, added notation for src file.
+* 0.2.0<br/>reconstruction
+<br/>fix priority bug
+<br/>use grunt
