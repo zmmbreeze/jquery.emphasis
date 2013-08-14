@@ -28,7 +28,7 @@ module.exports = function(grunt) {
       },
       dist: {
         src: srcFiles,
-        dest: 'bin/jquery.emphasis.js'
+        dest: 'src/jquery.emphasis.js'
       }
     },
     uglify: {
