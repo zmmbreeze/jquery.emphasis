@@ -9,6 +9,9 @@ Depends on jQuery >= 1.10. Tested on IE 8+, Chrome, Firefox 4+, Safari 5+, Opera
 
 Getting Started
 ---
+
+Checkout [*demo*](http://nodejs.in/jquery.emphasis/demo.html) first, see what jQuery.emphasis can do.
+
 Include jQuery and emphasis plugin into html like this:
 
     <script src="jquery-1.10.2.min.js"></script>
