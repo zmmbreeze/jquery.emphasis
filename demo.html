@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>jQuery.emphasis.js - Demo</title>
-    <meta name="Keywords" content="jquery.emphasis,text-emphasis,css3,fallback"/>
-    <meta name="Description" content="A lightweight javascript fallback for CSS3 text-emphasis."/>
+    <meta name="Keywords" content="jquery.emphasis,text-emphasis,css3,fallback,emphasis marks"/>
+    <meta name="Description" content="A javascript fallback for CSS3 emphasis mark, aka `text-emphasis`."/>
     <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
     <link href='http://fonts.googleapis.com/css?family=Autour+One' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="assets/google-code-prettify/prettify.css" />
@@ -12,6 +12,9 @@
 <body class="page-demo">
 <div class="main">
     <h1>jQuery.emphasis.js Demo</h1>
+    <p>
+        <a href="/">&lt;&lt; Go back to main page</a>
+    </p>
     <div id="example1" class="example lang-zh">When you're down, and the world seems dark and empty, <em>Your forever friend</em> lifts you up in spirits and makes that dark and empty world suddenly seem bright and full. <em>Your forever</em> friend gets you through the hard times, the sad times, and the confused times. If you turn and walk away, Your forever friend follows, If you lose you way, <em>Your forever friend</em> guides you and cheers you on.
         <pre><code>$('#example1 em').css('color', 'red');
 $('#example1 em:eq(0)').emphasis('filled');
@@ -30,6 +33,16 @@ $('#example2 em:eq(1), #example2 em:eq(3)')
     </div>
 
     <h2>Special case</h2>
+
+    <h3>Special character</h3>
+    <div id="example8" class="example">
+        <p>Lift up your head <em>princess</em>, if not, the crown falls.
+        </p>
+        <pre><code>$('#example8 em').css('font-family', 'monospace')
+                 .css('font-style', 'normal')
+                 .css('font-size', '24px')
+                 .emphasis('"♥"');</code></pre>
+    </div>
 
     <h3>letter-spacing</h3>
     <div id="example3" class="example">
@@ -77,16 +90,6 @@ $('#example5 p').emphasis('filled dot');</code></pre>
                        .emphasis('dot');
 $('#example7 em:eq(1)').css('font-size', '12px')
                        .emphasis('dot');</code></pre>
-    </div>
-
-    <h3>Special character</h3>
-    <div id="example8" class="example">
-        <p>Lift up your head <em>princess</em>, if not, the crown falls.
-        </p>
-        <pre><code>$('#example8 em').css('font-family', 'monospace')
-                 .css('font-style', 'normal')
-                 .css('font-size', '24px')
-                 .emphasis('"♥"');</code></pre>
     </div>
 
     <h3>Special line-height</h3>

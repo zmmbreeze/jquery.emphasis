@@ -1,7 +1,7 @@
 jQuery.emphasis.js
 ===============
 
-A lightweight javascript fallback for CSS3 [text-emphasis](http://www.w3.org/TR/css-text-decor-3/#emphasis-marks). It’s really useful for East Asian documents. Using small symbols next to each glyph to emphasize a run of text.
+A javascript fallback for CSS3 emphasis mark, aka [text-emphasis](http://www.w3.org/TR/css-text-decor-3/#emphasis-marks). It’s really useful for East Asian documents. Using small symbols next to each glyph to emphasize a run of text.
 
 ![demo](./assets/demo.png)
 
@@ -26,6 +26,13 @@ Include jQuery and emphasis plugin into html like this:
 * text-emphasis<br/>Type: String<br/>A string representing text-emphasis style.
 
 * text-emphasis-position<br/>Type: String<br/>A string representing text-emphasis-position style. Currently it's not support "right" and "left" in vertical writing-mode.
+
+Links
+---
+
+* [W3C emphasis marks document](http://www.w3.org/TR/css-text-decor-3/#emphasis-marks)
+* [jQuery.emphasis.js on Dailyjs](http://dailyjs.com/2013/08/13/jquery-roundup/)
+
 
 Know issues
 ---

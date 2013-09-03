@@ -1,11 +1,12 @@
 {
     "name": "emphasis",
     "title": "jQuery.emphasis.js",
-    "description": "A lightweight javascript fallback for CSS3 text-emphasis.",
+    "description": "A javascript fallback for CSS3 emphasis mark, aka `text-emphasis`.",
     "keywords": [
         "text-emphasis",
         "emphasis",
         "css3",
+        "emphasis marks",
         "ui",
         "effect"
     ],
