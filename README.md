@@ -54,3 +54,7 @@ LOG
 <br/>fix priority bug
 <br/>use grunt
 <br/>update index page
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/zmmbreeze/jquery.emphasis/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
