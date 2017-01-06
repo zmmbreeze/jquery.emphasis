@@ -119,7 +119,7 @@ MarkInfo.prototype.autoComplete = function() {
     if (this.isNone) {
         return;
     }
-    var language = navigator.language || navigator.browserLanguage;
+    var language = navigator.language || navigator.browserLanguage || '';
     language = language.slice(0, 2);
     var isJapanese = language === 'ja';
 
