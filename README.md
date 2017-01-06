@@ -19,7 +19,7 @@ Include jQuery and emphasis plugin into html like this:
     <script>
     $('em').emphasis('dot');
     </script>
-    
+
 ### .emphasis(text-emphasis)
 
 * text-emphasis<br/>Type: String<br/>A string representing text-emphasis style. For example: filled, dotted, filled sesame red, "@" #069. You can also use value none to remove the style. It's using navigator.language || navigator.browserLanguage to define which language was used. And it's not supporting vertical writing-mode.
@@ -54,7 +54,4 @@ LOG
 <br/>fix priority bug
 <br/>use grunt
 <br/>update index page
-
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/zmmbreeze/jquery.emphasis/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
+* 0.2.1<br/>Fixed #2

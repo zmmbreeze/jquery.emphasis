@@ -1,6 +1,6 @@
 {
   "name": "jQuery.emphasis.js",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A javascript fallback for CSS3 emphasis mark, aka `text-emphasis`.",
   "preferGlobal": false,
   "directories": {
